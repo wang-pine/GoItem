@@ -1,10 +1,9 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"service"
 	"tools"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {

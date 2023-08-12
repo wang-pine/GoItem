@@ -21,7 +21,6 @@ just for byte dance Go-Project
 - 极简抖音 APP 包使用说明：https://bytedance.feishu.cn/docs/doccnM9KkBAdyDhg8qaeGlIz7S7
 - 服务端 Demo，仓库地址 https://github.com/RaymondCode/simple-demo
 
-
 ## 2.开发需求
 
 1. 技术相关
@@ -29,3 +28,5 @@ just for byte dance Go-Project
 Go 语言编程，常用框架、数据库、对象存储等内容
 
 2. 需求相关
+
+实现接口，接口之后大家商议
