@@ -56,5 +56,5 @@ func InsertPWD(PWD string) (ret int64) {
 // 这个是原始函数，参数列表非常的长，最好不要调用
 func UpdateUserAllInfo(ID int64, new_name string, new_follow_count int64, new_follower_count int64, new_avator int64, new_bg_img string, new_signature string, new_favor int64, new_work_count int64, new_favor_count int64) {
 	fmt.Println("update")
-	
+
 }
