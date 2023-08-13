@@ -1,4 +1,4 @@
-module database
+module Mydatabase
 
 go 1.20
 

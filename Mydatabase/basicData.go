@@ -1,4 +1,4 @@
-package database
+package Mydatabase
 
 //用来对基本信息进行维护
 
@@ -33,9 +33,21 @@ func InitInfoDatabase() (err error) {
 
 // 向douyin_info的ID_PWD中插入PWD，同时返回被插入对象的ID
 func InsertPWD(PWD string) (ret int64) {
-	sqlStr := "insert into ID_PWD(PWD)VALUES('" + PWD + ")"
-	fmt.Println(sqlStr)
+	sqlStr := "insert into ID_PWD(PWD) VALUES(" + PWD + ");"
+	//fmt.Println(sqlStr)
 	//ret = id
+	ret1, err := db.Exec(sqlStr)
+	if err != nil {
+		fmt.Println("insert failed,err%v\n", err)
+		return
+	}
+	id, err := ret1.LastInsertId()
+	if err != nil {
+		fmt.Println("get failed,err:%v\n", err)
+		return
+	}
+	fmt.Println("id", id)
+	ret = id
 	return ret
 }
 
@@ -43,5 +55,6 @@ func InsertPWD(PWD string) (ret int64) {
 // 用id来查表更新用户数据
 // 这个是原始函数，参数列表非常的长，最好不要调用
 func UpdateUserAllInfo(ID int64, new_name string, new_follow_count int64, new_follower_count int64, new_avator int64, new_bg_img string, new_signature string, new_favor int64, new_work_count int64, new_favor_count int64) {
-	fmt.Println("")
+	fmt.Println("update")
+
 }
