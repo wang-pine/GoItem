@@ -17,16 +17,16 @@ type VideoData struct {
 //用户信息从数据库查询
 //(id是主键)
 type UserData struct {
-	Id               int64
-	Name             string
-	FollowCount      int64
-	FollowerCount    int64
-	avator           string
-	backgroundImage  string
-	signature        string
-	tootal_favorited int64
-	work_count       int64
-	favorite_count   int64
+	Id              int64
+	Name            string
+	FollowCount     int64
+	FollowerCount   int64
+	avator          string
+	backgroundImage string
+	signature       string
+	totalFavorited  int64
+	workCount       int64
+	favoriteCount   int64
 }
 
 //用户信息
