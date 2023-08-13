@@ -1,5 +1,11 @@
 go 1.20
+
 use ./controller
+
 use ./service
+
 use ./tools
-use ./database
+
+use ./Mydatabase
+
+use ./test
