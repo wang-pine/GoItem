@@ -10,7 +10,7 @@ import (
 
 type UserDTOResponse struct {
 	Response
-	UserDTO UserDTO `json:"userDTO"`
+	User UserDTO `json:"user"`
 }
 
 // 接口规定要的
@@ -55,7 +55,7 @@ func UserInfo(c *gin.Context) {
 	if user, exist := userInfos[id]; exist {
 		c.JSON(http.StatusOK, UserDTOResponse{
 			Response: Response{StatusCode: 0},
-			UserDTO:  user,
+			User:     user,
 		})
 	} else {
 		c.JSON(http.StatusOK, UserDTOResponse{
