@@ -20,3 +20,12 @@ func TestInsertNewUser(t *testing.T) {
 		t.Errorf("发生错误")
 	}
 }
+func TestQueryUserPWD(t *testing.T) {
+	pwd:=Mydatabase.QueryUserPWD(2)
+	fmt.Println(pwd)
+}
+func TestJudgePWD(t *testing.T) {
+	test :="wsasnan"
+	ok := Mydatabase.JudgePWD(2,test)
+	fmt.Println(ok)
+}
