@@ -1,3 +1,161 @@
 package Mydatabase
 
 //这里用来对视频相关的数据库进行维护
+import (
+	"fmt"
+)
+
+type Videoinfo struct {
+	VideoId               int64  `gorm:"type:int(20); not null" json:"video_id" binding:"required"`
+	AuthorId              int64  `gorm:"type:int(20); not null" json:"author_id" binding:"required"`
+	AuthorName            string `gorm:"type:varchar(20); not null" json:"author_name" binding:"required"`
+	AuthorFollowCount     int64  `gorm:"type:int(20); not null" json:"author_follow_count" binding:"required"`
+	AuthorFollowerCount   int64  `gorm:"type:int(20); not null" json:"author_follower_count" binding:"required"`
+	AuthorAvator          string `gorm:"type:varchar(20); not null" json:"author_avator" binding:"required"`
+	AuthorBackgroundImage string `gorm:"type:varchar(120); not null" json:"author_background_image" binding:"required"`
+	AuthorSignature       string `gorm:"type:varchar(120); not null" json:"author_signature" binding:"required"`
+	AuthorTotalFavorited  int64  `gorm:"type:int(20); not null" json:"author_total_favorited" binding:"required"`
+	AuthorWorkCount       int64  `gorm:"type:int(20); not null" json:"author_work_count" binding:"required"`
+	AuthorFavoriteCount   int64  `gorm:"type:int(20); not null" json:"author_favorite_count" binding:"required"`
+	VideoPlayUrl          string `gorm:"type:varchar(120); not null" json:"video_play_url" binding:"required"`
+	VideoCoverUrl         string `gorm:"type:varchar(120); not null" json:"video_cover_url" binding:"required"`
+	VideoFavoriteCount    int64  `gorm:"type:int(20); not null" json:"video_favorite_count" binding:"required"`
+	VideoCommentCount     int64  `gorm:"type:int(20); not null" json:"video_comment_count" binding:"required"`
+	VideoTitle            string `gorm:"type:varchar(30); not null" json:"video_title" binding:"required"`
+	VideoTime             string `gorm:"type:varchar(30); not null" json:"video_time" binding:"required"`
+}
+
+// 通过视频id查询Videoinfo信息
+func QueryVideoById(id int64) []Videoinfo {
+	db, err := GetDB()
+	var videos []Videoinfo
+	db.Where("video_id = ?", id).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	return videos
+}
+
+// 通过作者姓名查询Videoinfo信息
+func QueryVideoByAuthorName(AuthorName string) []Videoinfo {
+	db, err := GetDB()
+	var videos []Videoinfo
+	db.Where("author_name = ?", AuthorName).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	return videos
+}
+
+// 通过视频标题查询Videoinfo信息
+func QueryVideoByVideoTitle(VideoTitle string) []Videoinfo {
+	db, err := GetDB()
+	var videos []Videoinfo
+	db.Where("video_title = ?", VideoTitle).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	return videos
+}
+
+// 通过用户id查询Videoinfo信息
+func QueryVideoByAuthorId(authorId int64) []Videoinfo {
+	db, err := GetDB()
+	var videos []Videoinfo
+	db.Where("author_id = ?", authorId).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	return videos
+}
+
+// 通过用户id查询该用户所有视频id
+func QueryVideoIdByAuthorId(authorId int64) []int64 {
+	db, err := GetDB()
+	var videos []Videoinfo
+	db.Where("author_id = ?", authorId).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	vedisIds := make([]int64, len(videos))
+	for i := 0; i < len(videos); i++ {
+		vedisIds[i] = videos[i].VideoId
+	}
+	return vedisIds
+}
+
+// 通过用户姓名查询该用户所有视频id
+func QueryVideoIdByAuthorName(authorName string) []int64 {
+	db, err := GetDB()
+	var videos []Videoinfo
+	db.Where("author_name = ?", authorName).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	vedisIds := make([]int64, len(videos))
+	for i := 0; i < len(videos); i++ {
+		vedisIds[i] = videos[i].VideoId
+	}
+	return vedisIds
+}
+
+// 通过video_id删除vedio,-1删除失败，1删除成功
+func DeleteByVideoId(videoId int64) int64 {
+	db, err := GetDB()
+	var videos []Videoinfo
+	db.Where("video_id = ?", videoId).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	if len(videos) == 0 {
+		return -1
+	}
+	db.Where("author_id = ?", videoId).Delete(&videos)
+	return 1
+}
+
+// 通过用户id删除vedio,-1删除失败，1删除成功
+func DeleteByAuthorId(authorId int64) int64 {
+	db, err := GetDB()
+	var videos []Videoinfo
+	db.Where("author_id = ?", authorId).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	if len(videos) == 0 {
+		return -1
+	}
+
+	db.Where("author_id = ?", authorId).Delete(&videos)
+	return 1
+}
+
+// 增加视频信息,-1失败，1成功
+func InsertVideoInfo(video *Videoinfo) int64 {
+	db, err := GetDB()
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	result := db.Create(&video)
+	if result.Error != nil {
+		return -1
+	}
+	return 1
+}
+
+// 修改视频信息,-1失败，1成功
+func UpdateVideoInfo(video *Videoinfo) int64 {
+	db, err := GetDB()
+	var videos []Videoinfo
+	videoId := video.VideoId
+	db.Where("video_id = ?", videoId).Find(&videos)
+	if err != nil {
+		fmt.Println("连接失败！！")
+	}
+	fmt.Println(videos)
+	if len(videos) == 0 {
+		return -1
+	}
+	db.Where("video_id = ?", videoId).Save(&video)
+	return 1
+}

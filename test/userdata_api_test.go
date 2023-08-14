@@ -42,9 +42,9 @@ func TestInsertUser(t *testing.T) {
 func TestUpdateUser(t *testing.T) {
 	// e := newExpect(t)
 	user := Mydatabase.Userinfo{
-		Id: 90, Name: "大哥2", FollowCount: 10,
-		FollowerCount: 20, Avator: "哈实习",
-		BackgroundImage: "赫斯", Signature: "早上好",
+		Id: 2, Name: "大哥255", FollowCount: 10,
+		FollowerCount: 20, Avator: "ccc",
+		BackgroundImage: "c", Signature: "早上好",
 		TotalFavorited: 87,
 		WorkCount:      23,
 		FavoriteCount:  67}

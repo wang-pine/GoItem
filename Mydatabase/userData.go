@@ -1,48 +1,22 @@
 package Mydatabase
 
 //用来对基本信息进行维护
-
 import (
 	"fmt"
-	"time"
-
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"gorm.io/gorm/schema"
 )
 
 // 用户信息结构体
 type Userinfo struct {
 	Id              int64  `gorm:"type:varchar(20); not null" json:"id" binding:"required"`
 	Name            string `gorm:"type:varchar(20); not null" json:"name" binding:"required"`
-	FollowCount     int64  `gorm:"type:int(64); not null" json:"followcount" binding:"required"`
-	FollowerCount   int64  `gorm:"type:int(64); not null" json:"followercount" binding:"required"`
+	FollowCount     int64  `gorm:"type:int(64); not null" json:"follow_count" binding:"required"`
+	FollowerCount   int64  `gorm:"type:int(64); not null" json:"follower_count" binding:"required"`
 	Avator          string `gorm:"type:varchar(256); not null" json:"avator" binding:"required"`
-	BackgroundImage string `gorm:"type:varchar(256); not null" json:"backgroundimage" binding:"required"`
+	BackgroundImage string `gorm:"type:varchar(256); not null" json:"background_image" binding:"required"`
 	Signature       string `gorm:"type:varchar(64); not null" json:"signature" binding:"required"`
-	TotalFavorited  int64  `gorm:"type:int(20); not null" json:"totalfavorited" binding:"required"`
-	WorkCount       int64  `gorm:"type:int(20); not null" json:"workcount" binding:"required"`
-	FavoriteCount   int64  `gorm:"type:int(20); not null" json:"favoritecount" binding:"required"`
-}
-
-func GetDB() (*gorm.DB, error) {
-	// 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_info"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		NamingStrategy: schema.NamingStrategy{
-			SingularTable: true,
-		},
-	})
-	// 连接池
-	sqlDB, err := db.DB()
-	// SetMaxIdleConns 设置空闲连接池中连接的最大数量
-	sqlDB.SetMaxIdleConns(10)
-	// SetMaxOpenConns 设置打开数据库连接的最大数量。
-	sqlDB.SetMaxOpenConns(100)
-	// SetConnMaxLifetime 设置了连接可复用的最大时间。
-	sqlDB.SetConnMaxLifetime(10 * time.Second) // 10秒钟
-
-	return db, err
+	TotalFavorited  int64  `gorm:"type:int(20); not null" json:"total_favorited" binding:"required"`
+	WorkCount       int64  `gorm:"type:int(20); not null" json:"work_count" binding:"required"`
+	FavoriteCount   int64  `gorm:"type:int(20); not null" json:"favorite_count" binding:"required"`
 }
 
 // 通过id查询userinfo信息
@@ -95,4 +69,3 @@ func UpdateUser(user *Userinfo) int64 {
 	db.Save(&user)
 	return 1
 }
-
