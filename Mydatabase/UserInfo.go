@@ -29,7 +29,7 @@ func InitUsersDatabase() (err error) {
 }
 
 // 根据用户的id创建每个用户的分表
-func MakeNewUserTable(id int64) {
+func MakeNewUserTable(id int64) (err error) {
 	InitUsersDatabase()
 	sqlStr := "CREATE TABLE `" + strconv.FormatInt(id, 10) + "`(" +
 		"user_id BIGINT(20) NOT NULL," +
@@ -39,7 +39,7 @@ func MakeNewUserTable(id int64) {
 	_, err := dbUsers.Exec(sqlStr)
 	if err != nil {
 		fmt.Println("make table error:%v\n", err)
-		return
+		return err
 	}
 }
 
@@ -81,7 +81,7 @@ func GetUserVideosList(userId int64) (ret []int64, arrayLen int) {
 		return
 	}
 	defer func() {
-		rows.Close() // 会释放数据库连接
+		rows.Close() // 释放数据库连接
 	}()
 	var user_id int64
 	var video_id int64
