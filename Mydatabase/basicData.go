@@ -2,16 +2,10 @@ package Mydatabase
 
 // //用来对基本信息进行维护
 
-<<<<<<< HEAD
-import (
-	"database/sql"
-	"fmt"
-=======
 // import (
 // 	"database/sql"
 // 	"fmt"
 // 	"strconv"
->>>>>>> refs/remotes/origin/main
 
 // 	_ "github.com/go-sql-driver/mysql" //导入包但不使用，init()
 // )
@@ -58,7 +52,6 @@ import (
 // 	return ret
 // }
 
-<<<<<<< HEAD
 // 更新用户数据
 // 用id来查表更新用户数据
 // 这个是原始函数，参数列表非常的长，最好不要调用
@@ -91,7 +84,6 @@ import (
 // 	}
 // 	n, _ := ret.RowsAffected()
 // 	fmt.Println("更新了%d行数据\n", n)
-=======
 // // 更新用户数据
 // // 用id来查表更新用户数据
 // // 这个是原始函数，参数列表非常的长，最好不要调用
@@ -124,5 +116,4 @@ import (
 // 	}
 // 	n,_ := ret.RowsAffected()
 // 	fmt.Println("更新了%d行数据\n",n)
->>>>>>> refs/remotes/origin/main
 // }
