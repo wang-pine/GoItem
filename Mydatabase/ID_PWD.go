@@ -3,8 +3,8 @@ package Mydatabase
 import (
 	"crypto/md5"
 	"database/sql"
+	"encoding/hex"
 	"fmt"
-	"io"
 
 	_ "github.com/go-sql-driver/mysql" //导入包但不使用，init()
 )
@@ -15,7 +15,8 @@ var dbPWD *sql.DB
 func InitPWDDatabase() (err error) {
 	fmt.Printf("正在初始化用户账号密码数据库...\n")
 	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_info"
-	dbPWD, err := sql.Open("mysql", dsn)
+	dbPWD, err = sql.Open("mysql", dsn)
+	//注意这里是=，因为go会自动检查局部变量覆盖全局变量，切记
 	//open函数是不会检查用户名和密码的
 	if err != nil {
 		return err
@@ -30,6 +31,7 @@ func InitPWDDatabase() (err error) {
 }
 
 // 插入注册用户的账号密码
+//这里传入字符串就行，会自动加密保存到数据库中
 func InsertNewUser(PWD string) (err error) {
 	InitPWDDatabase()
 	md5Str := StringToMD5(PWD)
@@ -54,9 +56,8 @@ func InsertNewUser(PWD string) (err error) {
 // MD5加密
 func StringToMD5(PWD string) string {
 	w := md5.New()
-	io.WriteString(w, PWD)
-	md5str := fmt.Sprintf("%x", w.Sum(nil))
-	return md5str
+	w.Write([]byte(PWD))
+	return hex.EncodeToString(w.Sum(nil))
 }
 
 // 数据库中查询用户的密码
@@ -69,8 +70,10 @@ func QueryUserPWD(id int64) (PWD string) {
 
 // 链接后端递送的数据，比对账号和密码
 // 并判断是否正确
+//这里传入用户id和想要进行比对的密码的字符串即可
 func JudgePWD(id int64, PWD string) (res bool) {
 	InitPWDDatabase()
+	hash:=StringToMD5(PWD)
 	passWord := QueryUserPWD(id)
-	return PWD == passWord
+	return hash == passWord
 }
