@@ -5,7 +5,6 @@ package Mydatabase
 import (
 	"database/sql"
 	"fmt"
-	"strconv"
 
 	_ "github.com/go-sql-driver/mysql" //导入包但不使用，init()
 )
@@ -55,40 +54,33 @@ func InsertPWD(PWD string) (ret int64) {
 // 更新用户数据
 // 用id来查表更新用户数据
 // 这个是原始函数，参数列表非常的长，最好不要调用
-<<<<<<< HEAD
-func UpdateUserAllInfo(ID int64, new_name string, new_follow_count int64, new_follower_count int64, new_avator int64, new_bg_img string, new_signature string, new_favor int64, new_work_count int64, new_favor_count int64) {
-	fmt.Println("update")
-
-}
-=======
-func UpdateUserAllInfo(
-		id 					int64, 
-		new_name 			string, 
-		new_follow_count 	int64, 
-		new_follower_count 	int64, 
-		new_avator 			string, 
-		new_bg_img 			string, 
-		new_signature 		string, 
-		new_favor 			int64, 
-		new_work_count 		int64, 
-		new_favor_count 	int64) {
-	fmt.Println("updateing user info")
-	sqlStr := "UPDATE userinfo SET name =" 			+ new_name + 
-								"follow_count ="	+ strconv.FormatInt(new_follow_count) +
-								"follower_count ="	+ strconv.FormatInt(new_follower_count) + 
-								"avator =" 			+ new_avator+ 
-								"background_image="	+ new_bg_img+ 
-								"signature ="		+ new_signature+ 
-								"total_favorited="	+ strconv.FormatInt(new_favor)+
-								"work_count = " 	+ strconv.FormatInt(new_work_count)+ 
-								"favorite_count ="	+ strconv.FormatInt(new_favor_count)+ 
-								"where id =" + strconv.FormatInt(id)
-	ret,err := db.Exec(sqlStr)
-	if err != nil {
-		fmt.Println("update err%v",err)
-		return
-	}
-	n,_ := ret.RowsAffected()
-	fmt.Println("更新了%d行数据\n",n)
-}
->>>>>>> refs/remotes/origin/main
+// func UpdateUserAllInfo(
+// 	id int64,
+// 	new_name string,
+// 	new_follow_count int64,
+// 	new_follower_count int64,
+// 	new_avator string,
+// 	new_bg_img string,
+// 	new_signature string,
+// 	new_favor int64,
+// 	new_work_count int64,
+// 	new_favor_count int64) {
+// 	fmt.Println("updateing user info")
+// 	sqlStr := "UPDATE userinfo SET name =" + new_name +
+// 		"follow_count =" + strconv.FormatInt(new_follow_count) +
+// 		"follower_count =" + strconv.FormatInt(new_follower_count) +
+// 		"avator =" + new_avator +
+// 		"background_image=" + new_bg_img +
+// 		"signature =" + new_signature +
+// 		"total_favorited=" + strconv.FormatInt(new_favor) +
+// 		"work_count = " + strconv.FormatInt(new_work_count) +
+// 		"favorite_count =" + strconv.FormatInt(new_favor_count) +
+// 		"where id =" + strconv.FormatInt(id)
+// 	ret, err := db.Exec(sqlStr)
+// 	if err != nil {
+// 		fmt.Println("update err%v", err)
+// 		return
+// 	}
+// 	n, _ := ret.RowsAffected()
+// 	fmt.Println("更新了%d行数据\n", n)
+// }
