@@ -5,7 +5,10 @@ package Mydatabase
 // import (
 // 	"database/sql"
 // 	"fmt"
+<<<<<<< HEAD
 // 	"strconv"
+=======
+>>>>>>> f1b756401467399fe54567e69ba295dfb8a1dee2
 
 // 	_ "github.com/go-sql-driver/mysql" //导入包但不使用，init()
 // )
@@ -52,6 +55,10 @@ package Mydatabase
 // 	return ret
 // }
 
+<<<<<<< HEAD
+=======
+// <<<<<<< HEAD
+>>>>>>> f1b756401467399fe54567e69ba295dfb8a1dee2
 // 更新用户数据
 // 用id来查表更新用户数据
 // 这个是原始函数，参数列表非常的长，最好不要调用
@@ -84,6 +91,7 @@ package Mydatabase
 // 	}
 // 	n, _ := ret.RowsAffected()
 // 	fmt.Println("更新了%d行数据\n", n)
+// =======
 // // 更新用户数据
 // // 用id来查表更新用户数据
 // // 这个是原始函数，参数列表非常的长，最好不要调用
@@ -116,4 +124,5 @@ package Mydatabase
 // 	}
 // 	n,_ := ret.RowsAffected()
 // 	fmt.Println("更新了%d行数据\n",n)
+// >>>>>>> refs/remotes/origin/main
 // }
