@@ -39,14 +39,16 @@ type IDPWD struct {
 
 //用户累计上传视频的结构体
 //这个键值对在用户分表中存储
+//这里videoID是主键
 type UserVideo struct {
-	userId  int64
 	videoId int64
+	userId  int64
 }
 
 //视频累计点赞的结构体
 //这个键值对在视频分表中存储
+//这里userID是主键
 type VideoFavorited struct {
-	videoId int64
 	userId  int64
+	videoId int64
 }
