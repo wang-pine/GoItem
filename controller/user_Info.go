@@ -47,7 +47,7 @@ var userInfos = map[int]UserDTO{
 }
 
 func UserInfo(c *gin.Context) {
-	id, err := strconv.Atoi(c.Query("id"))
+	id, err := strconv.Atoi(c.Query("user_id"))
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
