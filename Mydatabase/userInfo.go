@@ -12,7 +12,7 @@ var dbUsers *sql.DB
 
 // 这里用来对单个用户的分表进行维护
 func InitUsersDatabase() (err error) {
-	fmt.Println("正在初始化用户视频列表数据库...\n")
+	fmt.Printf("正在初始化用户视频列表数据库...\n")
 	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_users"
 	dbUsers, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
@@ -29,43 +29,43 @@ func InitUsersDatabase() (err error) {
 }
 
 // 根据用户的id创建每个用户的分表
-func MakeNewUserTable(id int64) {
+func MakeNewUserTable(id int64) (err error) {
 	InitUsersDatabase()
 	sqlStr := "CREATE TABLE `" + strconv.FormatInt(id, 10) + "`(" +
-		"user_id BIGINT(20) NOT NULL," +
 		"video_id BIGINT(20) NOT NULL," +
-		"PRIMARY KEY(user_id)" +
+		"user_id BIGINT(20) NOT NULL," +
+		"PRIMARY KEY(video_id)" +
 		")ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
-	_, err := dbUsers.Exec(sqlStr)
-	if err != nil {
-		fmt.Println("make table error:%v\n", err)
-		return
+	_, err1 := dbUsers.Exec(sqlStr)
+	if err1 != nil {
+		fmt.Printf("make table error:%v\n", err)
+		return err1
 	}
+	return
 }
 
 // 创建完用户分表之后对用户分表插入视频id
 // 这个表现为用户每次上传完一个视频之后，就把这个视频的id插入到与用户同名的数据表中
-func InsertVideoIdToUserTable(userId int64, videoId int64) {
+func InsertVideoIdToUserTable(videoId int64, userId int64) {
 	InitUsersDatabase()
-	sqlStr := "INSERT INTO `" + strconv.FormatInt(userId, 10) + "`(user_id,video_id)VALLUES(" + strconv.FormatInt(userId, 10) + "," + strconv.FormatInt(videoId, 10) + ")"
+	sqlStr := "INSERT INTO `" + strconv.FormatInt(userId, 10) + "`(video_id,user_id)VALUES(" + strconv.FormatInt(videoId, 10) + "," + strconv.FormatInt(userId, 10) + ");"
 	execDatabase(sqlStr)
 }
 
 // 这是执行数据库语句的函数
 // 用户不要调用
-func execDatabase(sqlStr string) (res bool) {
+func execDatabase(sqlStr string) {
 	ret, err := dbUsers.Exec(sqlStr)
 	if err != nil {
-		fmt.Println("failed,err%v\n", err)
-		return false
+		fmt.Printf("failed,err%v\n", err)
+		return
 	}
 	id, err := ret.LastInsertId()
 	if err != nil {
-		fmt.Println("get failed,err:%v\n", err)
-		return false
+		fmt.Printf("get failed,err:%v\n", err)
+		return
 	}
-	fmt.Println("插入成功的id是", id)
-	return true
+	fmt.Println("运行成功的id是", id)
 }
 
 // 查询视频的id表
@@ -74,25 +74,25 @@ func execDatabase(sqlStr string) (res bool) {
 func GetUserVideosList(userId int64) (ret []int64, arrayLen int) {
 	InitUsersDatabase()
 	var UserVideoList []int64
-	sqlStr := "SELECT user_id,video_id FROM" + strconv.FormatInt(userId, 10) + "WHERE user_id > ?"
-	rows, err := dbUsers.Query(sqlStr, 0)
+	sqlStr := "SELECT video_id,user_id FROM `" + strconv.FormatInt(userId, 10) + "` WHERE video_id > 0"
+	rows, err := dbUsers.Query(sqlStr)
 	if err != nil {
 		fmt.Printf("query failed, err:%v\n", err)
 		return
 	}
 	defer func() {
-		rows.Close() // 会释放数据库连接
+		rows.Close() // 释放数据库连接
 	}()
 	var user_id int64
 	var video_id int64
 	for rows.Next() {
-		err := rows.Scan(&user_id, &video_id)
+		err := rows.Scan(&video_id, &user_id)
 		if err != nil {
 			fmt.Printf("scan failed, err:%v\n", err)
 			return
 		}
-		fmt.Println("scan success ,user id =%v", user_id)
-		fmt.Println("viideo id = %v\n", video_id)
+		fmt.Printf("scan success ,user id =%v", user_id)
+		fmt.Printf("viideo id = %v\n", video_id)
 		UserVideoList = append(UserVideoList, video_id)
 	}
 	return UserVideoList, len(UserVideoList)
