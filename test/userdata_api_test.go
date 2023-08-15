@@ -15,7 +15,7 @@ func TestGetDB(t *testing.T) {
 // 根据id查询用户测试
 func TestGetUserId(t *testing.T) {
 	//e := newExpect(t)
-	fmt.Println(Mydatabase.QueryUserById(20))
+	fmt.Println(Mydatabase.QueryUserById(1))
 }
 
 // 根据id查询用户测试
