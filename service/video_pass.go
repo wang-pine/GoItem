@@ -1,4 +1,4 @@
-package controller
+package service
 
 //"github.com/your/package/douyinpb"
 

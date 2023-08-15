@@ -60,14 +60,4 @@ func PublishList(c *gin.Context) {
 	})
 }
 
-// 检查这个用户是否喜欢了视频
-func isFavorite(UserID int64, VideoID int64) bool {
-	usersList, length := Mydatabase.GetFavoriteUsersList(VideoID)
-	var i int
-	for i = 0; i < length; i++ {
-		if usersList[i] == UserID {
-			return true
-		}
-	}
-	return false
-}
+

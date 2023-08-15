@@ -96,3 +96,14 @@ func GetFavoriteUsersList(videoId int64) (ret []int64, arrayLen int) {
 	}
 	return VideoFavorUsersList, len(VideoFavorUsersList)
 }
+// 检查这个用户是否喜欢了视频
+func IsFavorite(UserID int64, VideoID int64) bool {
+	usersList, length := GetFavoriteUsersList(VideoID)
+	var i int
+	for i = 0; i < length; i++ {
+		if usersList[i] == UserID {
+			return true
+		}
+	}
+	return false
+}
