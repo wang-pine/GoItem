@@ -43,3 +43,7 @@ func TestGetFavoriteUsersList(t *testing.T) {
 		fmt.Println(ret[i], " ")
 	}
 }
+func TestIsFavorite(t *testing.T){
+	fmt.Println(Mydatabase.IsFavorite(4,1))
+	fmt.Println(Mydatabase.IsFavorite(5,1))
+}

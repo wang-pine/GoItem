@@ -4,10 +4,10 @@
 USE douyin_users;
 DROP TABLE IF EXISTS `1`;
 CREATE TABLE `1`(
-    user_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+    user_id BIGINT(20) NOT NULL,
     video_id BIGINT(20) NOT NULL,
     PRIMARY KEY(user_id)
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO `1`(
     user_id,
     video_id
