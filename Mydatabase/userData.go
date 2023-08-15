@@ -66,6 +66,6 @@ func UpdateUser(user *Userinfo) int64 {
 	if len(users) == 0 {
 		return -1
 	}
-	db.Save(&user)
+	db.Where("id = ?", id).Save(&user)
 	return 1
 }

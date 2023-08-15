@@ -1,12 +1,8 @@
-package main
+package controller
 
-import (
-	"fmt"
-	"sort"
+//"github.com/your/package/douyinpb"
 
-	"github.com/your/package/douyinpb"
-)
-
+/*
 func main() {
 
 douyinFeedRequest := &douyinpb.DouyinFeedRequest{
@@ -16,7 +12,7 @@ douyinFeedRequest := &douyinpb.DouyinFeedRequest{
 
 
 	responseData := SendDouyinFeedRequest(douyinFeedRequest)
-	
+
 	douyinFeedResponse := &douyinpb.DouyinFeedResponse{}
 	err := douyinFeedResponse.Unmarshal(responseData)
 	if err != nil {
@@ -56,19 +52,13 @@ douyinFeedRequest := &douyinpb.DouyinFeedRequest{
 		fmt.Println("Title:", video.GetTitle())
 		// ...
 	}
-
-
-
 }
-
+/*
 func SendDouyinFeedRequest(request *douyinpb.DouyinFeedRequest) []byte {
 
-
-	var responseData  []byte
+	var responseData []byte
 	return responseData
 }
-
-
 
 func GenerateVideoList() []*douyinpb.Video {
 	// 模拟生成 video_list 数据
@@ -89,3 +79,4 @@ func GenerateVideoList() []*douyinpb.Video {
 
 	return videoList
 }
+*/
