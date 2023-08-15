@@ -1,10 +1,12 @@
 package controller
 
 import (
+	"Mydatabase"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"path/filepath"
+
+	"github.com/gin-gonic/gin"
 )
 
 type VideoListResponse struct {
@@ -56,4 +58,16 @@ func PublishList(c *gin.Context) {
 		},
 		VideoList: DemoVideos,
 	})
+}
+
+// 检查这个用户是否喜欢了视频
+func isFavorite(UserID int64, VideoID int64) bool {
+	usersList, length := Mydatabase.GetFavoriteUsersList(VideoID)
+	var i int
+	for i = 0; i < length; i++ {
+		if usersList[i] == UserID {
+			return true
+		}
+	}
+	return false
 }

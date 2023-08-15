@@ -76,4 +76,5 @@ func JudgePWD(id int64, PWD string) (res bool) {
 	hash:=StringToMD5(PWD)
 	passWord := QueryUserPWD(id)
 	return hash == passWord
+	//注意，“==”是不安全的字符串比对策略，它是逐字符进行比对，遇到不同的字符才返回错误，转换成md5一定程度上可以规避
 }

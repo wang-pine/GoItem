@@ -92,7 +92,7 @@ func GetUserVideosList(userId int64) (ret []int64, arrayLen int) {
 			return
 		}
 		fmt.Printf("scan success ,user id =%v", user_id)
-		fmt.Printf("video id = %v\n", video_id)
+		fmt.Printf("viideo id = %v\n", video_id)
 		UserVideoList = append(UserVideoList, video_id)
 	}
 	return UserVideoList, len(UserVideoList)
