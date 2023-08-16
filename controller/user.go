@@ -41,51 +41,6 @@ type UserResponse struct {
 	User common.User `json:"user"`
 }
 
-/*
-	func Register(c *gin.Context) {
-		username := c.Query("username")
-		password := c.Query("password")
-
-		token := username + password
-
-		if _, exist := usersLoginInfo[token]; exist {
-			c.JSON(http.StatusOK, UserLoginResponse{
-				Response: common.Response{StatusCode: 1, StatusMsg: "User already exist"},
-			})
-		} else {
-			atomic.AddInt64(&userIdSequence, 1)
-			newUser := common.User{
-				Id:   userIdSequence,
-				Name: username,
-			}
-			usersLoginInfo[token] = newUser
-			c.JSON(http.StatusOK, UserLoginResponse{
-				Response: common.Response{StatusCode: 0},
-				UserId:   userIdSequence,
-				Token:    username + password,
-			})
-		}
-	}
-
-	func Login(c *gin.Context) {
-		username := c.Query("username")
-		password := c.Query("password")
-
-		token := username + password
-
-		if user, exist := usersLoginInfo[token]; exist {
-			c.JSON(http.StatusOK, UserLoginResponse{
-				Response: common.Response{StatusCode: 0},
-				UserId:   user.Id,
-				Token:    token,
-			})
-		} else {
-			c.JSON(http.StatusOK, UserLoginResponse{
-				Response: common.Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
-			})
-		}
-	}
-*/
 // MD5加密
 func StringToMD5(PWD string) string {
 	w := md5.New()
@@ -103,7 +58,7 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusOK, UserLoginResponse{
 			Response: common.Response{StatusCode: 1, StatusMsg: "User Name already exist"},
 		})
-	}else{
+	} else {
 		err, userId := Mydatabase.InsertNewUser(password)
 		if err != nil {
 			fmt.Println("插入新用户密码错误", err)
@@ -112,9 +67,15 @@ func Register(c *gin.Context) {
 		var userInfo common.Userinfo
 		userInfo.Id = userId
 		userInfo.Name = username
+		//在总数据库中插入当前用户的信息
 		res := Mydatabase.InsertUser(&userInfo)
 		if !res {
 			fmt.Println("插入用户总信息错误")
+		}
+		//创建用户上传视频的分表
+		err1 := Mydatabase.MakeNewUserTable(userId)
+		if err1 != nil {
+			fmt.Println("创建用户分表错误", err1)
 		}
 		if service.PushToken(token, userId) != true {
 			fmt.Println("insert token error")
@@ -136,8 +97,8 @@ func Login(c *gin.Context) {
 	if userInfo.Id == 0 {
 		c.JSON(http.StatusOK, UserLoginResponse{
 			Response: common.Response{
-				StatusCode: 1, 
-				StatusMsg: "Userxxxx doesn't exist",
+				StatusCode: 1,
+				StatusMsg:  "Userxxxx doesn't exist",
 			},
 		})
 		fmt.Println("用户不存在")
@@ -145,9 +106,11 @@ func Login(c *gin.Context) {
 		if StringToMD5(password) == Mydatabase.QueryUserPWD(userInfo.Id) {
 			_, token := service.SearchTokenById(userInfo.Id)
 			c.JSON(http.StatusOK, UserLoginResponse{
-				Response: common.Response{StatusCode: 0,StatusMsg: "密码正确，登录成功"},
-				UserId:   userInfo.Id,
-				Token:    token,
+				Response: common.Response{StatusCode: 0,
+					StatusMsg: "密码正确，登录成功",
+				},
+				UserId: userInfo.Id,
+				Token:  token,
 			})
 			fmt.Println("密码正确能返回正确的值")
 		}

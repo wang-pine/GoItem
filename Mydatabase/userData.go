@@ -22,9 +22,9 @@ type Userinfo struct {
 }
 */
 // 通过id查询userinfo信息
-func QueryUserById(id int64) []common.Userinfo {
+func QueryUserById(id int64) common.Userinfo {
 	db, err := GetDB()
-	var users []common.Userinfo
+	var users common.Userinfo
 	db.Where("id = ?", id).Find(&users)
 	if err != nil {
 		fmt.Println("连接失败！！")

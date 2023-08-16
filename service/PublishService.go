@@ -50,7 +50,7 @@ func Publish(c *gin.Context) {
 		title = finalName
 	}
 	var userinfo common.Userinfo
-	userinfo = Mydatabase.QueryUserById(userId)[0]
+	userinfo = Mydatabase.QueryUserById(userId)
 	var user common.User
 	ConvertUserInfoToUser(&userinfo, &user, userId)
 	new_video := common.Video{}
