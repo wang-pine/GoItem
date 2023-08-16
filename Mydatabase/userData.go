@@ -46,6 +46,7 @@ func InsertUser(user *Userinfo) int64 {
 	db, err := GetDB()
 	if err != nil {
 		fmt.Println("连接失败！！")
+		
 	}
 	result := db.Create(&user)
 	if result.Error != nil {
@@ -59,6 +60,7 @@ func UpdateUser(user *Userinfo) int64 {
 	db, err := GetDB()
 	if err != nil {
 		fmt.Println("连接失败！！")
+		return -1
 	}
 	id := user.Id
 	var users []Userinfo
@@ -66,6 +68,6 @@ func UpdateUser(user *Userinfo) int64 {
 	if len(users) == 0 {
 		return -1
 	}
-	db.Save(&user)
+	db.Where("id = ?", id).Save(&user)
 	return 1
 }

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"GoItem/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -16,8 +17,19 @@ type VideoListResponse struct {
 func Publish(c *gin.Context) {
 	token := c.PostForm("token")
 
-	if _, exist := usersLoginInfo[token]; !exist {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
+	//if _, exist := usersLoginInfo[token]; !exist {
+	//	c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
+	//	return
+	//}
+
+	//获取登录用户id,模拟测试
+	userId := 1
+	userToken := utils.GetUserToken(int64(userId))
+	if userToken != token || token == "" {
+		c.JSON(http.StatusOK, Response{
+			StatusCode: 1,
+			StatusMsg:  "User doesn't exist",
+		})
 		return
 	}
 
