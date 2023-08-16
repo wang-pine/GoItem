@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"common"
 	"log"
 	"net/http"
 	"strconv"
@@ -9,7 +10,7 @@ import (
 )
 
 type UserDTOResponse struct {
-	Response
+	common.Response
 	User UserDTO `json:"user"`
 }
 
@@ -54,12 +55,12 @@ func UserInfo(c *gin.Context) {
 	//把user换成获取到的数据就行了
 	if user, exist := userInfos[id]; exist {
 		c.JSON(http.StatusOK, UserDTOResponse{
-			Response: Response{StatusCode: 0},
+			Response: common.Response{StatusCode: 0},
 			User:     user,
 		})
 	} else {
 		c.JSON(http.StatusOK, UserDTOResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
+			Response: common.Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
 		})
 	}
 

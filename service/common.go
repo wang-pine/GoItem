@@ -1,5 +1,5 @@
 package service
-
+/*
 type Response struct {
 	StatusCode int32
 	StatusMsg  string
@@ -45,3 +45,4 @@ type MessagePushEvent struct {
 	FromUserId int64
 	MsgContent string
 }
+*/

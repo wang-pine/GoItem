@@ -2,6 +2,7 @@ package test
 
 import (
 	"Mydatabase"
+	"common"
 	"fmt"
 	"testing"
 )
@@ -15,7 +16,7 @@ func TestQueryVideoByAuthorId(t *testing.T) {
 }
 
 func TestInsertVideoInfo(t *testing.T) {
-	video := Mydatabase.Videoinfo{
+	video := common.Videoinfo{
 		VideoId: 2, AuthorId: 2, AuthorName: "测试数据",
 		AuthorFollowCount: 21, AuthorFollowerCount: 23,
 		AuthorAvator: "eferg", AuthorBackgroundImage: "深夜下哦美好看",
@@ -51,7 +52,7 @@ func TestDeleteByAuthorId(t *testing.T) {
 }
 
 func TestUpdateVideoInfo(t *testing.T) {
-	video := Mydatabase.Videoinfo{
+	video := common.Videoinfo{
 		VideoId: 2, AuthorId: 2, AuthorName: "垃圾很多很多ddddd",
 		AuthorFollowCount: 21, AuthorFollowerCount: 23,
 		AuthorAvator: "的结局", AuthorBackgroundImage: "d334",

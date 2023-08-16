@@ -2,10 +2,12 @@ package Mydatabase
 
 //用来对基本信息进行维护
 import (
+	"common"
 	"fmt"
 )
 
 // 用户信息结构体
+/*
 type Userinfo struct {
 	Id              int64  `gorm:"type:varchar(20); not null" json:"id" binding:"required"`
 	Name            string `gorm:"type:varchar(20); not null" json:"name" binding:"required"`
@@ -18,11 +20,11 @@ type Userinfo struct {
 	WorkCount       int64  `gorm:"type:int(20); not null" json:"work_count" binding:"required"`
 	FavoriteCount   int64  `gorm:"type:int(20); not null" json:"favorite_count" binding:"required"`
 }
-
+*/
 // 通过id查询userinfo信息
-func QueryUserById(id int64) []Userinfo {
+func QueryUserById(id int64) []common.Userinfo {
 	db, err := GetDB()
-	var users []Userinfo
+	var users []common.Userinfo
 	db.Where("id = ?", id).Find(&users)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -31,9 +33,9 @@ func QueryUserById(id int64) []Userinfo {
 }
 
 // 通过name查询userinfo信息
-func QueryUserByName(name string) []Userinfo {
+func QueryUserByName(name string) []common.Userinfo {
 	db, err := GetDB()
-	var users []Userinfo
+	var users []common.Userinfo
 	db.Where("name = ?", name).Find(&users)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -42,7 +44,7 @@ func QueryUserByName(name string) []Userinfo {
 }
 
 // 插入一个用户,1成功，-失败
-func InsertUser(user *Userinfo) int64 {
+func InsertUser(user *common.Userinfo) int64 {
 	db, err := GetDB()
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -55,13 +57,13 @@ func InsertUser(user *Userinfo) int64 {
 }
 
 // 修改一个用户,1成功，-失败
-func UpdateUser(user *Userinfo) int64 {
+func UpdateUser(user *common.Userinfo) int64 {
 	db, err := GetDB()
 	if err != nil {
 		fmt.Println("连接失败！！")
 	}
 	id := user.Id
-	var users []Userinfo
+	var users []common.Userinfo
 	db.Where("id = ?", id).Find(&users)
 	if len(users) == 0 {
 		return -1
