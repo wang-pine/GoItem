@@ -52,6 +52,12 @@ func Publish(c *gin.Context) {
 
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
+	userVideoList,len:=Mydatabase.GetUserVideosList()
+	var i int
+	userVideoListTotal []Video
+	for i=0;i<len;i++{
+		// userVideoListTotal=append(userVideoList,)
+	}
 	c.JSON(http.StatusOK, VideoListResponse{
 		Response: Response{
 			StatusCode: 0,
