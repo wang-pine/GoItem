@@ -33,43 +33,43 @@ func QueryUserById(id int64) []common.Userinfo {
 }
 
 // 通过name查询userinfo信息
-func QueryUserByName(name string) []common.Userinfo {
+func QueryUserByName(name string) (common.Userinfo){
 	db, err := GetDB()
-	var users []common.Userinfo
-	db.Where("name = ?", name).Find(&users)
+	var user common.Userinfo
+	db.Where("name = ?", name).Find(&user)
 	if err != nil {
 		fmt.Println("连接失败！！")
 	}
-	return users
+	return user
 }
 
 // 插入一个用户,1成功，-失败
-func InsertUser(user *common.Userinfo) int64 {
+func InsertUser(user *common.Userinfo) bool {
 	db, err := GetDB()
 	if err != nil {
 		fmt.Println("连接失败！！")
-		
+
 	}
 	result := db.Create(&user)
 	if result.Error != nil {
-		return -1
+		return false
 	}
-	return 1
+	return true
 }
 
-// 修改一个用户,1成功，-失败
-func UpdateUser(user *common.Userinfo) int64 {
+// 修改一个用户
+func UpdateUser(user *common.Userinfo) bool {
 	db, err := GetDB()
 	if err != nil {
 		fmt.Println("连接失败！！")
-		return -1
+		return false
 	}
 	id := user.Id
 	var users []common.Userinfo
 	db.Where("id = ?", id).Find(&users)
 	if len(users) == 0 {
-		return -1
+		return false
 	}
 	db.Where("id = ?", id).Save(&user)
-	return 1
+	return true
 }

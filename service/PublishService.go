@@ -66,7 +66,7 @@ func Publish(c *gin.Context) {
 	videoInfo.VideoTitle = title
 	videoInfo.VideoTime = ""
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
-	if res == -1 {
+	if res == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
 			StatusMsg:  "添加数据库有误！",
