@@ -1,10 +1,6 @@
-package controller
+package common
 
-import (
-	"common"
-)
-
-var DemoVideos = []common.Video{
+var DemoVideos = []Video{
 	{
 		Id:            1,
 		Author:        DemoUser,
@@ -16,7 +12,7 @@ var DemoVideos = []common.Video{
 	},
 }
 
-var DemoComments = []common.Comment{
+var DemoComments = []Comment{
 	{
 		Id:         1,
 		User:       DemoUser,
@@ -25,7 +21,7 @@ var DemoComments = []common.Comment{
 	},
 }
 
-var DemoUser = common.User{
+var DemoUser = User{
 	Id:            1,
 	Name:          "TestUser",
 	FollowCount:   0,

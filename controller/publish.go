@@ -12,11 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type VideoListResponse struct {
-	common.Response
-	VideoList []common.Video `json:"video_list"`
-}
-
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
 	token := c.PostForm("token")

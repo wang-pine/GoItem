@@ -1,19 +1,20 @@
 package service
 
 import (
-	"GoItem/utils"
 	"Mydatabase"
-	"controller"
+	"common"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"math/rand"
 	"net/http"
 	"path/filepath"
+	"utils"
+
+	"github.com/gin-gonic/gin"
 )
 
 type VideoListResponse struct {
-	controller.Response
-	VideoList []controller.Video `json:"video_list"`
+	common.Response
+	VideoList []common.Video `json:"video_list"`
 }
 
 // Publish check token then save upload file to public directory
@@ -24,7 +25,7 @@ func Publish(c *gin.Context) {
 	userId = 1
 	userToken := utils.GetUserToken(int64(userId))
 	if userToken != token || token == "" {
-		c.JSON(http.StatusOK, controller.Response{
+		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
 			StatusMsg:  "User doesn't exist",
 		})
@@ -33,7 +34,7 @@ func Publish(c *gin.Context) {
 
 	data, err := c.FormFile("data")
 	if err != nil {
-		c.JSON(http.StatusOK, controller.Response{
+		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
@@ -48,11 +49,11 @@ func Publish(c *gin.Context) {
 	if title == "" {
 		title = finalName
 	}
-	var userinfo Mydatabase.Userinfo
+	var userinfo common.Userinfo
 	userinfo = Mydatabase.QueryUserById(userId)[0]
-	var user controller.User
+	var user common.User
 	ConvertUserInfoToUser(&userinfo, &user, userId)
-	new_video := controller.Video{}
+	new_video := common.Video{}
 	new_video.Id = int64(rand.Int())
 	new_video.Author = user
 	new_video.CommentCount = 0
@@ -60,27 +61,27 @@ func Publish(c *gin.Context) {
 	new_video.FavoriteCount = userinfo.FavoriteCount
 	new_video.IsFavorite = false
 	new_video.PlayUrl = ""
-	var videoInfo Mydatabase.Videoinfo
+	var videoInfo common.Videoinfo
 	ConvertUserVideoToVideoIfo(&userinfo, &new_video, &videoInfo)
 	videoInfo.VideoTitle = title
 	videoInfo.VideoTime = ""
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
 	if res == -1 {
-		c.JSON(http.StatusOK, controller.Response{
+		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
 			StatusMsg:  "添加数据库有误！",
 		})
 		return
 	}
 	if err := c.SaveUploadedFile(data, saveFile); err != nil {
-		c.JSON(http.StatusOK, controller.Response{
+		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, controller.Response{
+	c.JSON(http.StatusOK, common.Response{
 		StatusCode: 0,
 		StatusMsg:  finalName + " uploaded successfully",
 	})
