@@ -1,17 +1,20 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"service"
+	"controller"
 	"tools"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	go service.RunMessageServer()
+	go controller.RunMessageServer()
 
 	r := gin.Default()
-
 	tools.InitRouter(r)
 
-	r.Run(":8888")
+	err := r.Run(":8888")
+	if err != nil {
+		return
+	}
 }

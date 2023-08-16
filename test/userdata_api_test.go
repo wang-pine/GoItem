@@ -2,6 +2,7 @@ package test
 
 import (
 	"Mydatabase"
+	"common"
 	"fmt"
 	"testing"
 )
@@ -27,7 +28,7 @@ func TestGetUserName(t *testing.T) {
 // 创建一个用户
 func TestInsertUser(t *testing.T) {
 	// e := newExpect(t)
-	user := Mydatabase.Userinfo{
+	user := common.Userinfo{
 		Id: 0, Name: "ddssjj", FollowCount: 1,
 		FollowerCount: 20, Avator: "哈实习",
 		BackgroundImage: "赫斯", Signature: "早上好",
@@ -41,7 +42,7 @@ func TestInsertUser(t *testing.T) {
 
 func TestUpdateUser(t *testing.T) {
 	// e := newExpect(t)
-	user := Mydatabase.Userinfo{
+	user := common.Userinfo{
 		Id: 3, Name: "大哥3355", FollowCount: 10,
 		FollowerCount: 20, Avator: "ccc",
 		BackgroundImage: "c", Signature: "早上好",

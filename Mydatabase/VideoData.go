@@ -3,8 +3,9 @@ package Mydatabase
 //这里用来对视频相关的数据库进行维护
 import (
 	"fmt"
+	"common"
 )
-
+/*
 type Videoinfo struct {
 	VideoId               int64  `gorm:"type:int(20); not null" json:"video_id" binding:"required"`
 	AuthorId              int64  `gorm:"type:int(20); not null" json:"author_id" binding:"required"`
@@ -24,11 +25,11 @@ type Videoinfo struct {
 	VideoTitle            string `gorm:"type:varchar(30); not null" json:"video_title" binding:"required"`
 	VideoTime             string `gorm:"type:varchar(30); not null" json:"video_time" binding:"required"`
 }
-
+*/
 // 通过视频id查询Videoinfo信息
-func QueryVideoById(id int64) []Videoinfo {
+func QueryVideoById(id int64) common.Videoinfo {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos common.Videoinfo
 	db.Where("video_id = ?", id).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -37,9 +38,9 @@ func QueryVideoById(id int64) []Videoinfo {
 }
 
 // 通过作者姓名查询Videoinfo信息
-func QueryVideoByAuthorName(AuthorName string) []Videoinfo {
+func QueryVideoByAuthorName(AuthorName string) []common.Videoinfo {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos []common.Videoinfo
 	db.Where("author_name = ?", AuthorName).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -48,9 +49,9 @@ func QueryVideoByAuthorName(AuthorName string) []Videoinfo {
 }
 
 // 通过视频标题查询Videoinfo信息
-func QueryVideoByVideoTitle(VideoTitle string) []Videoinfo {
+func QueryVideoByVideoTitle(VideoTitle string) []common.Videoinfo {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos []common.Videoinfo
 	db.Where("video_title = ?", VideoTitle).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -59,9 +60,9 @@ func QueryVideoByVideoTitle(VideoTitle string) []Videoinfo {
 }
 
 // 通过用户id查询Videoinfo信息
-func QueryVideoByAuthorId(authorId int64) []Videoinfo {
+func QueryVideoByAuthorId(authorId int64) []common.Videoinfo {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos []common.Videoinfo
 	db.Where("author_id = ?", authorId).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -72,7 +73,7 @@ func QueryVideoByAuthorId(authorId int64) []Videoinfo {
 // 通过用户id查询该用户所有视频id
 func QueryVideoIdByAuthorId(authorId int64) []int64 {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos []common.Videoinfo
 	db.Where("author_id = ?", authorId).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -87,7 +88,7 @@ func QueryVideoIdByAuthorId(authorId int64) []int64 {
 // 通过用户姓名查询该用户所有视频id
 func QueryVideoIdByAuthorName(authorName string) []int64 {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos []common.Videoinfo
 	db.Where("author_name = ?", authorName).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -102,7 +103,7 @@ func QueryVideoIdByAuthorName(authorName string) []int64 {
 // 通过video_id删除vedio,-1删除失败，1删除成功
 func DeleteByVideoId(videoId int64) int64 {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos []common.Videoinfo
 	db.Where("video_id = ?", videoId).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -117,7 +118,7 @@ func DeleteByVideoId(videoId int64) int64 {
 // 通过用户id删除vedio,-1删除失败，1删除成功
 func DeleteByAuthorId(authorId int64) int64 {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos []common.Videoinfo
 	db.Where("author_id = ?", authorId).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -131,7 +132,7 @@ func DeleteByAuthorId(authorId int64) int64 {
 }
 
 // 增加视频信息,-1失败，1成功
-func InsertVideoInfo(video *Videoinfo) int64 {
+func InsertVideoInfo(video *common.Videoinfo) int64 {
 	db, err := GetDB()
 	if err != nil {
 		fmt.Println("连接失败！！")
@@ -144,9 +145,9 @@ func InsertVideoInfo(video *Videoinfo) int64 {
 }
 
 // 修改视频信息,-1失败，1成功
-func UpdateVideoInfo(video *Videoinfo) int64 {
+func UpdateVideoInfo(video *common.Videoinfo) int64 {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos []common.Videoinfo
 	videoId := video.VideoId
 	db.Where("video_id = ?", videoId).Find(&videos)
 	if err != nil {

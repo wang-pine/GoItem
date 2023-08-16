@@ -1,7 +1,8 @@
-package service
+package controller
 
 import (
-	"controller"
+	//"controller"
+	"common"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -43,7 +44,7 @@ func process(conn net.Conn) {
 			continue
 		}
 
-		var event = controller.MessageSendEvent{}
+		var event = common.MessageSendEvent{}
 		_ = json.Unmarshal(buf[:n], &event)
 		fmt.Printf("Receive Message：%+v\n", event)
 
@@ -60,7 +61,7 @@ func process(conn net.Conn) {
 			continue
 		}
 
-		pushEvent := controller.MessagePushEvent{
+		pushEvent := common.MessagePushEvent{
 			FromUserId: event.UserId,
 			MsgContent: event.MsgContent,
 		}
