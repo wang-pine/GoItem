@@ -71,3 +71,24 @@ func ConvertUserToUserIfo(user *common.User, userInfo *common.Userinfo) {
 	userInfo.WorkCount = 0
 	userInfo.FavoriteCount = 0
 }
+
+// user是前端向后端传递的信息
+// userinfo是向数据库传递的信息
+// 这个函数是向数据库传递信息用的
+func ConvertUserVideoToVideoIfo(userInfo *Mydatabase.Userinfo, video *controller.Video, videoInfo *Mydatabase.Videoinfo) {
+	videoInfo.VideoId = video.Id
+	videoInfo.AuthorId = video.Author.Id
+	videoInfo.AuthorName = video.Author.Name
+	videoInfo.AuthorFollowCount = video.Author.FollowCount
+	videoInfo.AuthorFollowerCount = video.Author.FollowerCount
+	videoInfo.AuthorAvator = userInfo.Avator
+	videoInfo.AuthorBackgroundImage = userInfo.BackgroundImage
+	videoInfo.AuthorSignature = userInfo.Signature
+	videoInfo.AuthorTotalFavorited = userInfo.TotalFavorited
+	videoInfo.AuthorWorkCount = userInfo.WorkCount
+	videoInfo.AuthorFavoriteCount = userInfo.FavoriteCount
+	videoInfo.VideoPlayUrl = video.PlayUrl
+	videoInfo.VideoCoverUrl = video.CoverUrl
+	videoInfo.VideoFavoriteCount = video.FavoriteCount
+	videoInfo.VideoCommentCount = video.CommentCount
+}
