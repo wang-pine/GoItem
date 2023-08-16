@@ -50,7 +50,7 @@ func Publish(c *gin.Context) {
 		title = finalName
 	}
 	var userinfo common.Userinfo
-	userinfo = Mydatabase.QueryUserById(userId)[0]
+	userinfo = Mydatabase.QueryUserById(userId)
 	var user common.User
 	ConvertUserInfoToUser(&userinfo, &user, userId)
 	new_video := common.Video{}
@@ -66,7 +66,7 @@ func Publish(c *gin.Context) {
 	videoInfo.VideoTitle = title
 	videoInfo.VideoTime = ""
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
-	if res == -1 {
+	if res == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
 			StatusMsg:  "添加数据库有误！",

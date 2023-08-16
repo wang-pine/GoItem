@@ -100,8 +100,8 @@ func QueryVideoIdByAuthorName(authorName string) []int64 {
 	return vedisIds
 }
 
-// 通过video_id删除vedio,-1删除失败，1删除成功
-func DeleteByVideoId(videoId int64) int64 {
+// 通过video_id删除vedio
+func DeleteByVideoId(videoId int64) bool {
 	db, err := GetDB()
 	var videos []common.Videoinfo
 	db.Where("video_id = ?", videoId).Find(&videos)
@@ -109,14 +109,14 @@ func DeleteByVideoId(videoId int64) int64 {
 		fmt.Println("连接失败！！")
 	}
 	if len(videos) == 0 {
-		return -1
+		return false
 	}
 	db.Where("author_id = ?", videoId).Delete(&videos)
-	return 1
+	return true
 }
 
-// 通过用户id删除vedio,-1删除失败，1删除成功
-func DeleteByAuthorId(authorId int64) int64 {
+// 通过用户id删除vedio
+func DeleteByAuthorId(authorId int64) bool {
 	db, err := GetDB()
 	var videos []common.Videoinfo
 	db.Where("author_id = ?", authorId).Find(&videos)
@@ -124,28 +124,28 @@ func DeleteByAuthorId(authorId int64) int64 {
 		fmt.Println("连接失败！！")
 	}
 	if len(videos) == 0 {
-		return -1
+		return false
 	}
 
 	db.Where("author_id = ?", authorId).Delete(&videos)
-	return 1
+	return true
 }
 
-// 增加视频信息,-1失败，1成功
-func InsertVideoInfo(video *common.Videoinfo) int64 {
+// 增加视频信息
+func InsertVideoInfo(video *common.Videoinfo) bool {
 	db, err := GetDB()
 	if err != nil {
 		fmt.Println("连接失败！！")
 	}
 	result := db.Create(&video)
 	if result.Error != nil {
-		return -1
+		return false
 	}
-	return 1
+	return true
 }
 
-// 修改视频信息,-1失败，1成功
-func UpdateVideoInfo(video *common.Videoinfo) int64 {
+// 修改视频信息
+func UpdateVideoInfo(video *common.Videoinfo) bool {
 	db, err := GetDB()
 	var videos []common.Videoinfo
 	videoId := video.VideoId
@@ -155,8 +155,8 @@ func UpdateVideoInfo(video *common.Videoinfo) int64 {
 	}
 	fmt.Println(videos)
 	if len(videos) == 0 {
-		return -1
+		return false
 	}
 	db.Where("video_id = ?", videoId).Save(&video)
-	return 1
+	return true
 }

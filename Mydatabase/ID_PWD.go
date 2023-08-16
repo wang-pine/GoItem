@@ -31,8 +31,8 @@ func InitPWDDatabase() (err error) {
 }
 
 // 插入注册用户的账号密码
-//这里传入字符串就行，会自动加密保存到数据库中
-func InsertNewUser(PWD string) (err error) {
+// 这里传入字符串就行，会自动加密保存到数据库中
+func InsertNewUser(PWD string) (error, int64) {
 	InitPWDDatabase()
 	md5Str := StringToMD5(PWD)
 	//fmt.Println(md5Str)
@@ -40,16 +40,16 @@ func InsertNewUser(PWD string) (err error) {
 	ret, err := dbPWD.Exec(sqlStr)
 	if err != nil {
 		fmt.Printf("insert failed,err%v\n", err)
-		return
+		return err, 0
 	}
 	//id用来获取当前插入的序列id
 	id, err := ret.LastInsertId()
 	if err != nil {
 		fmt.Printf("get failed,err:%v\n", err)
-		return
+		return err, 0
 	}
 	fmt.Println("插入成功id=", id)
-	return err
+	return err, int64(id)
 }
 
 // 用户注册后账号密码需要进行加密处理
@@ -70,10 +70,10 @@ func QueryUserPWD(id int64) (PWD string) {
 
 // 链接后端递送的数据，比对账号和密码
 // 并判断是否正确
-//这里传入用户id和想要进行比对的密码的字符串即可
+// 这里传入用户id和想要进行比对的密码的字符串即可
 func JudgePWD(id int64, PWD string) (res bool) {
 	InitPWDDatabase()
-	hash:=StringToMD5(PWD)
+	hash := StringToMD5(PWD)
 	passWord := QueryUserPWD(id)
 	return hash == passWord
 	//注意，“==”是不安全的字符串比对策略，它是逐字符进行比对，遇到不同的字符才返回错误，转换成md5一定程度上可以规避

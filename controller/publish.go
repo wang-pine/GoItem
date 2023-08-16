@@ -52,23 +52,32 @@ func Publish(c *gin.Context) {
 func PublishList(c *gin.Context) {
 	//token := c.Query("token")
 	userId := c.Query("user_id")
-	userID, err := strconv.ParseInt(userId, 10, 64)
-	if err != nil {
-		fmt.Println("convert userId error")
+	userID,_ := strconv.ParseInt(userId, 10, 64)
+	//ok, userId := service.SearchToken(token)
+	if userID != 0 {
+		userVideosIdList, len := Mydatabase.GetUserVideosList(userID)
+		var i int
+		var userVideoListDetailed []common.Video
+		for i = 0; i < len; i++ {
+			var temp common.Video
+			videoInfoTemp := Mydatabase.QueryVideoById(userVideosIdList[i])
+			service.ConvertVideoInfoToVideo(&videoInfoTemp, &temp, userID)
+			userVideoListDetailed = append(userVideoListDetailed, temp)
+		}
+		c.JSON(http.StatusOK, VideoListResponse{
+			Response: common.Response{
+				StatusCode: 0,
+			},
+			VideoList: userVideoListDetailed,
+		})
+	} else {
+		fmt.Println("不存在的id", userId)
+		c.JSON(http.StatusOK, VideoListResponse{
+			Response: common.Response{
+				StatusCode: 1,
+				StatusMsg:  "此人id不存在",
+			},
+		})
 	}
-	userVideosIdList, len := Mydatabase.GetUserVideosList(1)
-	var i int
-	var userVideoListDetailed []common.Video
-	for i = 0; i < len; i++ {
-		var temp common.Video
-		videoInfoTemp := Mydatabase.QueryVideoById(userVideosIdList[i])
-		service.ConvertVideoInfoToVideo(&videoInfoTemp, &temp, userID)
-		userVideoListDetailed = append(userVideoListDetailed, temp)
-	}
-	c.JSON(http.StatusOK, VideoListResponse{
-		Response: common.Response{
-			StatusCode: 0,
-		},
-		VideoList: userVideoListDetailed,
-	})
+
 }
