@@ -1,5 +1,5 @@
 package common
-
+//这个文件是数据库使用的结构体
 type Videoinfo struct {
 	VideoId               int64  `gorm:"type:int(20); not null" json:"video_id" binding:"required"`
 	AuthorId              int64  `gorm:"type:int(20); not null" json:"author_id" binding:"required"`

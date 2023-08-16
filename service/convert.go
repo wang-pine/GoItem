@@ -75,7 +75,7 @@ func ConvertUserToUserIfo(user *common.User, userInfo *common.Userinfo) {
 // user是前端向后端传递的信息
 // userinfo是向数据库传递的信息
 // 这个函数是向数据库传递信息用的
-func ConvertUserVideoToVideoIfo(userInfo *Mydatabase.Userinfo, video *controller.Video, videoInfo *Mydatabase.Videoinfo) {
+func ConvertUserVideoToVideoIfo(userInfo *common.Userinfo, video *common.Video, videoInfo *common.Videoinfo) {
 	videoInfo.VideoId = video.Id
 	videoInfo.AuthorId = video.Author.Id
 	videoInfo.AuthorName = video.Author.Name

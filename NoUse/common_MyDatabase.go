@@ -1,3 +1,5 @@
+package NoUse
+/*
 package Mydatabase
 
 //这个是用在与数据库进行交互的结构体
@@ -52,3 +54,4 @@ type VideoFavorited struct {
 	userId  int64
 	videoId int64
 }
+*/
