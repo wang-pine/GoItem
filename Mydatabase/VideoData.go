@@ -26,9 +26,9 @@ type Videoinfo struct {
 }
 
 // 通过视频id查询Videoinfo信息
-func QueryVideoById(id int64) []Videoinfo {
+func QueryVideoById(id int64) Videoinfo {
 	db, err := GetDB()
-	var videos []Videoinfo
+	var videos Videoinfo
 	db.Where("video_id = ?", id).Find(&videos)
 	if err != nil {
 		fmt.Println("连接失败！！")

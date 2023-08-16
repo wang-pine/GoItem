@@ -3,13 +3,13 @@ package service
 
 import (
 	"Mydatabase"
-	"controller"
+	//"controller"
 )
 
 // videoinfo是数据库信息
 // video是传向前端进行渲染的信息
 // userId是当前登录的用户的id，用来检查是否有关注这个视频的博主
-func ConvertVideoInfoToVideo(videoInfo *Mydatabase.Videoinfo, video *controller.Video, userId int64) {
+func ConvertVideoInfoToVideo(videoInfo *Mydatabase.Videoinfo, video *Video, userId int64) {
 	video.Id = videoInfo.VideoId
 	video.Author.Id = videoInfo.AuthorId
 	video.Author.Name = videoInfo.AuthorName
@@ -26,7 +26,7 @@ func ConvertVideoInfoToVideo(videoInfo *Mydatabase.Videoinfo, video *controller.
 // 将video信息存入数据库中
 // video是从前端接受的信息
 // videoinfo是发往数据库的信息
-func ConvertVideoToVideoInfo(video *controller.Video, videoInfo *Mydatabase.Videoinfo) {
+func ConvertVideoToVideoInfo(video *Video, videoInfo *Mydatabase.Videoinfo) {
 	videoInfo.VideoId = video.Id
 	videoInfo.AuthorId = video.Author.Id
 	videoInfo.AuthorName = video.Author.Name
@@ -47,7 +47,7 @@ func ConvertVideoToVideoInfo(video *controller.Video, videoInfo *Mydatabase.Vide
 // userinfo是数据库结构体
 // user是向前端传递的信息结构体
 // 这个函数是向前端传递信息用的
-func ConvertUserInfoToUser(userInfo *Mydatabase.Userinfo, user *controller.User, userId int64) {
+func ConvertUserInfoToUser(userInfo *Mydatabase.Userinfo, user *User, userId int64) {
 	user.Id = userInfo.Id
 	user.Name = userInfo.Name
 	user.FollowCount = userInfo.FollowCount
@@ -58,7 +58,7 @@ func ConvertUserInfoToUser(userInfo *Mydatabase.Userinfo, user *controller.User,
 // user是前端向后端传递的信息
 // userinfo是向数据库传递的信息
 // 这个函数是向数据库传递信息用的
-func ConvertUserToUserIfo(user *controller.User, userInfo *Mydatabase.Userinfo) {
+func ConvertUserToUserIfo(user *User, userInfo *Mydatabase.Userinfo) {
 	userInfo.Id = user.Id
 	userInfo.Name = user.Name
 	userInfo.FollowCount = user.FollowCount

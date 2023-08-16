@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
+	"service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -52,18 +53,19 @@ func Publish(c *gin.Context) {
 
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
-	userVideoList,len:=Mydatabase.GetUserVideosList()
+	userVideosIdList, len := Mydatabase.GetUserVideosList(1)
 	var i int
-	userVideoListTotal []Video
-	for i=0;i<len;i++{
-		// userVideoListTotal=append(userVideoList,)
+	var userVideoListDetailed []Video
+	for i = 0; i < len; i++ {
+		var temp Video
+		videoInfoTemp := Mydatabase.QueryVideoById(userVideosIdList[i])
+		service.ConvertVideoInfoToVideo(&videoInfoTemp, &temp,)
+		userVideoListDetailed = append(userVideoListDetailed, temp)
 	}
 	c.JSON(http.StatusOK, VideoListResponse{
 		Response: Response{
 			StatusCode: 0,
 		},
-		VideoList: DemoVideos,
+		VideoList: userVideoListDetailed,
 	})
 }
-
-
