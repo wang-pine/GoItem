@@ -3,6 +3,7 @@ package test
 import (
 	"Mydatabase"
 	"fmt"
+	"math/rand"
 	"testing"
 )
 
@@ -46,12 +47,14 @@ func TestQueryVideoIdByAuthorName(t *testing.T) {
 }
 
 func TestDeleteByAuthorId(t *testing.T) {
+	//注意，不要测试delete，没有授权
 	fmt.Println(Mydatabase.DeleteByAuthorId(1))
 }
 
 func TestUpdateVideoInfo(t *testing.T) {
 	video := Mydatabase.Videoinfo{
 		VideoId: 5, AuthorId: 2, AuthorName: "垃圾很多很多ddddd",
+
 		AuthorFollowCount: 21, AuthorFollowerCount: 23,
 		AuthorAvator: "的结局", AuthorBackgroundImage: "d334",
 		AuthorSignature: "二分", AuthorTotalFavorited: 21, AuthorWorkCount: 765,
@@ -64,4 +67,8 @@ func TestUpdateVideoInfo(t *testing.T) {
 }
 func TestDeleteByVideoId(t *testing.T) {
 	fmt.Println(Mydatabase.DeleteByVideoId(2))
+}
+
+func TestRand(t *testing.T) {
+	fmt.Println(rand.Int())
 }

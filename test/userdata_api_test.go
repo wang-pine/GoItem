@@ -15,20 +15,20 @@ func TestGetDB(t *testing.T) {
 // 根据id查询用户测试
 func TestGetUserId(t *testing.T) {
 	//e := newExpect(t)
-	fmt.Println(Mydatabase.QueryUserById(20))
+	fmt.Println(Mydatabase.QueryUserById(1))
 }
 
 // 根据id查询用户测试
 func TestGetUserName(t *testing.T) {
 	//e := newExpect(t)
-	fmt.Println(Mydatabase.QueryUserByName("dxw"))
+	fmt.Println(Mydatabase.QueryUserByName("王五"))
 }
 
 // 创建一个用户
 func TestInsertUser(t *testing.T) {
 	// e := newExpect(t)
 	user := Mydatabase.Userinfo{
-		Id: 0, Name: "dxw", FollowCount: 10,
+		Id: 0, Name: "ddssjj", FollowCount: 1,
 		FollowerCount: 20, Avator: "哈实习",
 		BackgroundImage: "赫斯", Signature: "早上好",
 		TotalFavorited: 87,
@@ -42,7 +42,7 @@ func TestInsertUser(t *testing.T) {
 func TestUpdateUser(t *testing.T) {
 	// e := newExpect(t)
 	user := Mydatabase.Userinfo{
-		Id: 2, Name: "大哥255", FollowCount: 10,
+		Id: 3, Name: "大哥3355", FollowCount: 10,
 		FollowerCount: 20, Avator: "ccc",
 		BackgroundImage: "c", Signature: "早上好",
 		TotalFavorited: 87,

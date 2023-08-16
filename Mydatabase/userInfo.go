@@ -38,7 +38,7 @@ func MakeNewUserTable(id int64) (err error) {
 		")ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
 	_, err1 := dbUsers.Exec(sqlStr)
 	if err1 != nil {
-		fmt.Printf("make table error:%v\n", err)
+		fmt.Printf("make table error:%v\n", err1)
 		return err1
 	}
 	return
@@ -92,7 +92,7 @@ func GetUserVideosList(userId int64) (ret []int64, arrayLen int) {
 			return
 		}
 		fmt.Printf("scan success ,user id =%v", user_id)
-		fmt.Printf("video id = %v\n", video_id)
+		fmt.Printf("viideo id = %v\n", video_id)
 		UserVideoList = append(UserVideoList, video_id)
 	}
 	return UserVideoList, len(UserVideoList)
