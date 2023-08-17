@@ -4,14 +4,21 @@
 USE douyin_users;
 DROP TABLE IF EXISTS `1`;
 CREATE TABLE `1`(
-    user_id BIGINT(20) NOT NULL,
     video_id BIGINT(20) NOT NULL,
-    PRIMARY KEY(user_id)
+    user_id BIGINT(20) NOT NULL,
+    PRIMARY KEY(video_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 INSERT INTO `1`(
-    user_id,
-    video_id
+    video_id,
+    user_id
 )VALUES(
     1,
     1
-)
+);
+INSERT INTO `1`(
+    video_id,
+    user_id
+)VALUES(
+    2,
+    1
+);

@@ -3,14 +3,14 @@
 USE douyin_videos;
 DROP TABLE IF EXISTS `1`;
 CREATE TABLE `1`(
-    video_id BIGINT(20) NOT NULL ,
     favorite_user_id BIGINT(20) NOT NULL,
-    PRIMARY KEY(video_id)
+    video_id BIGINT(20) NOT NULL ,
+    PRIMARY KEY(favorite_user_id)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 INSERT INTO `1`(
-    video_id,
-    favorite_user_id
+    favorite_user_id,
+    video_id
 )VALUES(
-    1,
+    2,
     1
 )

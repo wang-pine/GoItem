@@ -26,7 +26,7 @@ func InitPWDDatabase() (err error) {
 		return err
 	}
 	fmt.Println("链接数据库成功")
-	dbPWD.SetMaxIdleConns(10) //设置数据库连接池的最大连接数
+	dbPWD.SetMaxIdleConns(100) //设置数据库连接池的最大连接数
 	return err
 }
 

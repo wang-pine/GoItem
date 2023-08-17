@@ -24,7 +24,7 @@ func InitVideosDatabase() (err error) {
 		return
 	}
 	fmt.Println("链接数据库成功")
-	dbVideos.SetMaxIdleConns(10) //设置数据库连接池的最大连接数
+	dbVideos.SetMaxIdleConns(100) //设置数据库连接池的最大连接数
 	return
 }
 
@@ -96,6 +96,7 @@ func GetFavoriteUsersList(videoId int64) (ret []int64, arrayLen int) {
 	}
 	return VideoFavorUsersList, len(VideoFavorUsersList)
 }
+
 // 检查这个用户是否喜欢了视频
 func IsFavorite(UserID int64, VideoID int64) bool {
 	usersList, length := GetFavoriteUsersList(VideoID)

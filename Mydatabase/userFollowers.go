@@ -26,7 +26,7 @@ func InitFollowersDatabase() (err error) {
 		return
 	}
 	fmt.Println("链接数据库成功")
-	dbFollowers.SetMaxIdleConns(10) //设置数据库连接池的最大连接数
+	dbFollowers.SetMaxIdleConns(100) //设置数据库连接池的最大连接数
 	return
 }
 

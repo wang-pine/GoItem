@@ -29,10 +29,34 @@ INSERT INTO videoInfo(
     video_time
 )VALUES(
     1,
-    '192.168.3.10:8888/static/sohu.mp4',
-    '',
+    'http://192.168.3.10:8888/static/sohu.mp4',
+    'http://192.168.3.10:8888/static/1.jpg',
     '哈哈哈哈',
     '202308122243'
-)
-#备注:我觉的这么设置时间戳是不安全的。这个需要想想办法，这样不好
-#应该做一个约束，不能这么随意！！！！
+);
+INSERT INTO videoInfo(
+    author_id,
+    video_play_url,
+    video_cover_url,
+    video_title,
+    video_time
+)VALUES(
+    1,
+    'http://192.168.3.10:8888/static/光年之外.mp4',
+    'http://192.168.3.10:8888/static/2.jpg',
+    '哈哈哈哈',
+    '202308122243'
+);
+INSERT INTO videoInfo(
+    author_id,
+    video_play_url,
+    video_cover_url,
+    video_title,
+    video_time
+)VALUES(
+    2,
+    'http://192.168.3.10:8888/static/bear.mp4',
+    'http://192.168.3.10:8888/static/3.jpg',
+    '哈哈哈哈',
+    '202308122243'
+);

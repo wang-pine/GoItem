@@ -24,7 +24,7 @@ func InitUsersDatabase() (err error) {
 		return
 	}
 	fmt.Println("链接数据库成功")
-	dbUsers.SetMaxIdleConns(10) //设置数据库连接池的最大连接数
+	dbUsers.SetMaxIdleConns(100) //设置数据库连接池的最大连接数
 	return
 }
 
