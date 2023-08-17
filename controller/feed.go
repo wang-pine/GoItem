@@ -29,7 +29,7 @@ func Feed(c *gin.Context) {
 	VideoList = append(VideoList, temp)
 	var i int
 	lastId, _ := strconv.Atoi(strconv.FormatInt(tailVideoId, 10))
-	for i = lastId; i > 0; i-- {
+	for i = lastId - 1; i > 0; i-- {
 		videoTemp := Mydatabase.QueryVideoById(int64(i))
 		var temp1 common.Video
 		service.ConvertVideoInfoToVideo(&videoTemp, &temp1, userId)

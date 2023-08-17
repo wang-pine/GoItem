@@ -4,10 +4,10 @@ import (
 	"Mydatabase"
 	"common"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"math/rand"
 	"net/http"
 	"path/filepath"
+
+	"github.com/gin-gonic/gin"
 )
 
 type VideoListResponse struct {
@@ -50,18 +50,24 @@ func Publish(c *gin.Context) {
 	var user common.User
 	ConvertUserInfoToUser(&userinfo, &user, userId)
 	new_video := common.Video{}
-	new_video.Id = int64(rand.Int())
+	//获取最后一个视频的id
+	last := Mydatabase.GetLastVideo()
+	new_video.Id = last.VideoId + 1 //应当是最后一个+1
 	new_video.Author = user
 	new_video.CommentCount = 0
 	new_video.CoverUrl = ""
 	new_video.FavoriteCount = userinfo.FavoriteCount
 	new_video.IsFavorite = false
-	new_video.PlayUrl = "http://localhost:8888/static/" + finalName
+	//new_video.PlayUrl = "http://localhost:8888/static/" + finalName
+	new_video.PlayUrl = "http://192.168.3.10:8888/static/" + finalName
 	var videoInfo common.Videoinfo
 	ConvertUserVideoToVideoIfo(&userinfo, &new_video, &videoInfo)
 	videoInfo.VideoTitle = title
 	videoInfo.VideoTime = ""
+	//插入到视频总表的数据库
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
+	//插入进用户分表
+	Mydatabase.InsertVideoIdToUserTable(videoInfo.VideoId, videoInfo.AuthorId)
 	if res == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
