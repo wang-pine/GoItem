@@ -17,13 +17,10 @@ type VideoListResponse struct {
 
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
-	token := c.Query("token")
-	println("xxxxxxxx")
+	token := c.PostForm("token")
 	res_tag, userId := SearchToken(token)
-	title := c.Query("title")
-	fmt.Println(token)
-	fmt.Println(userId)
-	fmt.Println(res_tag)
+	title := c.PostForm("title")
+	fmt.Println("获取到的token是：" + token)
 	if res_tag == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
@@ -59,7 +56,7 @@ func Publish(c *gin.Context) {
 	new_video.CoverUrl = ""
 	new_video.FavoriteCount = userinfo.FavoriteCount
 	new_video.IsFavorite = false
-	new_video.PlayUrl = ""
+	new_video.PlayUrl = "http://localhost:8888/static/" + finalName
 	var videoInfo common.Videoinfo
 	ConvertUserVideoToVideoIfo(&userinfo, &new_video, &videoInfo)
 	videoInfo.VideoTitle = title
