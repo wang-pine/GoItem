@@ -24,7 +24,8 @@ func InitUsersDatabase() (err error) {
 		return
 	}
 	fmt.Println("链接数据库成功")
-	dbUsers.SetMaxIdleConns(10) //设置数据库连接池的最大连接数
+	dbUsers.SetMaxIdleConns(100)
+	//设置数据库连接池的最大连接数
 	return
 }
 
@@ -38,7 +39,7 @@ func MakeNewUserTable(id int64) (err error) {
 		")ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
 	_, err1 := dbUsers.Exec(sqlStr)
 	if err1 != nil {
-		fmt.Printf("make table error:%v\n", err1)
+		fmt.Printf("make table error:%v\n", err)
 		return err1
 	}
 	return

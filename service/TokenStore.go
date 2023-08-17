@@ -1,14 +1,20 @@
 package service
 
-//做一个哈希表，用于对Token进行维护
-//注意，这里可以使用redis进行替代
-//哈希表只是权宜之策
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"strconv"
+)
+
+// 做一个哈希表，用于对Token进行维护
+// 注意，这里可以使用redis进行替代
+// 哈希表只是权宜之策
 var tokenStore = make(map[string]int64)
 var idStore = make(map[int64]string)
 
-//"token":userID
-//userId:"token"
-//维护两个哈希表实现键值对的快速查询
+// "token":userID
+// userId:"token"
+// 维护两个哈希表实现键值对的快速查询
 func PushToken(token string, userId int64) bool {
 	if tokenStore[token] == 0 {
 		tokenStore[token] = userId
@@ -32,4 +38,16 @@ func SearchTokenById(Id int64) (ok bool, token string) {
 	} else {
 		return true, idStore[Id]
 	}
+}
+
+// MD5加密
+func StringToMD5(PWD string) string {
+	w := md5.New()
+	w.Write([]byte(PWD))
+	return hex.EncodeToString(w.Sum(nil))
+}
+func CreateUserToken(Id int64, password string) string {
+	token := strconv.FormatInt(Id, 10) + StringToMD5(password)
+
+	return token
 }

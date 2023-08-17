@@ -4,10 +4,8 @@ import (
 	"Mydatabase"
 	"common"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"path/filepath"
-	"utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,11 +18,10 @@ type VideoListResponse struct {
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
 	token := c.PostForm("token")
-	//获取登录用户id,模拟测试
-	var userId int64
-	userId = 1
-	userToken := utils.GetUserToken(int64(userId))
-	if userToken != token || token == "" {
+	res_tag, userId := SearchToken(token)
+	title := c.PostForm("title")
+	fmt.Println("获取到的token是：" + token)
+	if res_tag == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
 			StatusMsg:  "User doesn't exist",
@@ -45,7 +42,6 @@ func Publish(c *gin.Context) {
 	finalName := fmt.Sprintf("%d_%s", userId, filename)
 	saveFile := filepath.Join("./public/", finalName)
 
-	title := c.PostForm("title")
 	if title == "" {
 		title = finalName
 	}
@@ -54,18 +50,24 @@ func Publish(c *gin.Context) {
 	var user common.User
 	ConvertUserInfoToUser(&userinfo, &user, userId)
 	new_video := common.Video{}
-	new_video.Id = int64(rand.Int())
+	//获取最后一个视频的id
+	last := Mydatabase.GetLastVideo()
+	new_video.Id = last.VideoId + 1 //应当是最后一个+1
 	new_video.Author = user
 	new_video.CommentCount = 0
 	new_video.CoverUrl = ""
 	new_video.FavoriteCount = userinfo.FavoriteCount
 	new_video.IsFavorite = false
-	new_video.PlayUrl = ""
+	//new_video.PlayUrl = "http://localhost:8888/static/" + finalName
+	new_video.PlayUrl = "http://192.168.3.10:8888/static/" + finalName
 	var videoInfo common.Videoinfo
 	ConvertUserVideoToVideoIfo(&userinfo, &new_video, &videoInfo)
 	videoInfo.VideoTitle = title
 	videoInfo.VideoTime = ""
+	//插入到视频总表的数据库
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
+	//插入进用户分表
+	Mydatabase.InsertVideoIdToUserTable(videoInfo.VideoId, videoInfo.AuthorId)
 	if res == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,

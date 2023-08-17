@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net/http"
 	"service"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -63,7 +62,7 @@ func Register(c *gin.Context) {
 		if err != nil {
 			fmt.Println("插入新用户密码错误", err)
 		}
-		token := strconv.FormatInt(userId, 10) + StringToMD5(password)
+		token := service.CreateUserToken(userId, password)
 		var userInfo common.Userinfo
 		userInfo.Id = userId
 		userInfo.Name = username
@@ -104,7 +103,11 @@ func Login(c *gin.Context) {
 		fmt.Println("用户不存在")
 	} else {
 		if StringToMD5(password) == Mydatabase.QueryUserPWD(userInfo.Id) {
-			_, token := service.SearchTokenById(userInfo.Id)
+			ok, token := service.SearchTokenById(userInfo.Id)
+			if !ok {
+				token = service.CreateUserToken(userInfo.Id, Mydatabase.QueryUserPWD(userInfo.Id))
+				service.PushToken(token, userInfo.Id)
+			}
 			c.JSON(http.StatusOK, UserLoginResponse{
 				Response: common.Response{StatusCode: 0,
 					StatusMsg: "密码正确，登录成功",
@@ -112,6 +115,7 @@ func Login(c *gin.Context) {
 				UserId: userInfo.Id,
 				Token:  token,
 			})
+			fmt.Println(token)
 			fmt.Println("密码正确能返回正确的值")
 		}
 		fmt.Println("用户存在")

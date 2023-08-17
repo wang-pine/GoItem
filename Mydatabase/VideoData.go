@@ -2,9 +2,10 @@ package Mydatabase
 
 //这里用来对视频相关的数据库进行维护
 import (
-	"fmt"
 	"common"
+	"fmt"
 )
+
 /*
 type Videoinfo struct {
 	VideoId               int64  `gorm:"type:int(20); not null" json:"video_id" binding:"required"`
@@ -159,4 +160,15 @@ func UpdateVideoInfo(video *common.Videoinfo) bool {
 	}
 	db.Where("video_id = ?", videoId).Save(&video)
 	return true
+}
+
+// 获取最后一个视频
+func GetLastVideo() common.Videoinfo {
+	db, err := GetDB()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	var video common.Videoinfo
+	db.Last(&video)
+	return video
 }
