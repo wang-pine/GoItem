@@ -7,14 +7,14 @@ CREATE TABLE videoInfo(
     author_name VARCHAR(20) DEFAULT '',
     author_follow_count BIGINT DEFAULT '0',
     author_follower_count BIGINT DEFAULT '0',
-    author_avator VARCHAR(30) DEFAULT '',
-    author_background_image VARCHAR(30) DEFAULT '',
+    author_avator VARCHAR(60) DEFAULT '',
+    author_background_image VARCHAR(60) DEFAULT '',
     author_signature VARCHAR(120) DEFAULT '',
     author_total_favorited BIGINT(20) DEFAULT '0',
     author_work_count BIGINT(20) DEFAULT '0',
     author_favorite_count BIGINT(20) DEFAULT '0',
-    video_play_url VARCHAR(30) DEFAULT '',
-    video_cover_url VARCHAR(30) DEFAULT '',
+    video_play_url VARCHAR(60) DEFAULT '',
+    video_cover_url VARCHAR(60) DEFAULT '',
     video_favorite_count BIGINT(20) DEFAULT '0',
     video_comment_count BIGINT(20) DEFAULT '0',
     video_title VARCHAR(30) DEFAULT '',
@@ -29,8 +29,8 @@ INSERT INTO videoInfo(
     video_time
 )VALUES(
     1,
-    'here',
-    'there',
+    '192.168.3.10:8888/static/sohu',
+    '',
     '哈哈哈哈',
     '202308122243'
 )
