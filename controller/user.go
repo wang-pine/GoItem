@@ -6,11 +6,9 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"service"
-	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
 // usersLoginInfo use map to store user info, and key is username+password for demo
@@ -63,7 +61,7 @@ func Register(c *gin.Context) {
 		if err != nil {
 			fmt.Println("插入新用户密码错误", err)
 		}
-		token := strconv.FormatInt(userId, 10) + StringToMD5(password)
+		token := service.CreateUserToken(userId, password)
 		var userInfo common.Userinfo
 		userInfo.Id = userId
 		userInfo.Name = username
@@ -113,6 +111,7 @@ func Login(c *gin.Context) {
 				UserId: userInfo.Id,
 				Token:  token,
 			})
+			fmt.Println(token)
 			fmt.Println("密码正确能返回正确的值")
 		}
 		fmt.Println("用户存在")

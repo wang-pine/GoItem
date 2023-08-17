@@ -4,12 +4,10 @@ import (
 	"Mydatabase"
 	"common"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"math/rand"
 	"net/http"
 	"path/filepath"
-	"utils"
-
-	"github.com/gin-gonic/gin"
 )
 
 type VideoListResponse struct {
@@ -19,12 +17,14 @@ type VideoListResponse struct {
 
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
-	token := c.PostForm("token")
-	//获取登录用户id,模拟测试
-	var userId int64
-	userId = 1
-	userToken := utils.GetUserToken(int64(userId))
-	if userToken != token || token == "" {
+	token := c.Query("token")
+	println("xxxxxxxx")
+	res_tag, userId := SearchToken(token)
+	title := c.Query("title")
+	fmt.Println(token)
+	fmt.Println(userId)
+	fmt.Println(res_tag)
+	if res_tag == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
 			StatusMsg:  "User doesn't exist",
@@ -45,7 +45,6 @@ func Publish(c *gin.Context) {
 	finalName := fmt.Sprintf("%d_%s", userId, filename)
 	saveFile := filepath.Join("./public/", finalName)
 
-	title := c.PostForm("title")
 	if title == "" {
 		title = finalName
 	}
