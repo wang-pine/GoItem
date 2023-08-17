@@ -1,7 +1,8 @@
 package service
 
 import (
-	"controller"
+	"crypto/md5"
+	"encoding/hex"
 	"strconv"
 )
 
@@ -38,8 +39,15 @@ func SearchTokenById(Id int64) (ok bool, token string) {
 		return true, idStore[Id]
 	}
 }
+
+// MD5加密
+func StringToMD5(PWD string) string {
+	w := md5.New()
+	w.Write([]byte(PWD))
+	return hex.EncodeToString(w.Sum(nil))
+}
 func CreateUserToken(Id int64, password string) string {
-	token := strconv.FormatInt(Id, 10) + controller.StringToMD5(password)
+	token := strconv.FormatInt(Id, 10) + StringToMD5(password)
 
 	return token
 }

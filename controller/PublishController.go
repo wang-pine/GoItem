@@ -2,8 +2,9 @@ package controller
 
 import (
 	"common"
-	"github.com/gin-gonic/gin"
 	"service"
+
+	"github.com/gin-gonic/gin"
 )
 
 type VideoListResponse struct {
@@ -12,6 +13,7 @@ type VideoListResponse struct {
 }
 
 // Publish check token then save upload file to public directory
+
 func Publish(c *gin.Context) {
 	service.Publish(c)
 }

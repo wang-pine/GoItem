@@ -6,9 +6,10 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"service"
+
+	"github.com/gin-gonic/gin"
 )
 
 // usersLoginInfo use map to store user info, and key is username+password for demo
@@ -102,8 +103,11 @@ func Login(c *gin.Context) {
 		fmt.Println("用户不存在")
 	} else {
 		if StringToMD5(password) == Mydatabase.QueryUserPWD(userInfo.Id) {
-			_, token := service.SearchTokenById(userInfo.Id)
-			ok := service.PushToken(token,)
+			ok, token := service.SearchTokenById(userInfo.Id)
+			if !ok {
+				token1 := service.CreateUserToken(userInfo.Id, Mydatabase.QueryUserPWD(userInfo.Id))
+				service.PushToken(token1, userInfo.Id)
+			}
 			c.JSON(http.StatusOK, UserLoginResponse{
 				Response: common.Response{StatusCode: 0,
 					StatusMsg: "密码正确，登录成功",
