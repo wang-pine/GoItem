@@ -29,7 +29,7 @@ INSERT INTO videoInfo(
     video_time
 )VALUES(
     1,
-    '192.168.3.10:8888/static/sohu',
+    '192.168.3.10:8888/static/sohu.mp4',
     '',
     '哈哈哈哈',
     '202308122243'

@@ -105,8 +105,8 @@ func Login(c *gin.Context) {
 		if StringToMD5(password) == Mydatabase.QueryUserPWD(userInfo.Id) {
 			ok, token := service.SearchTokenById(userInfo.Id)
 			if !ok {
-				token1 := service.CreateUserToken(userInfo.Id, Mydatabase.QueryUserPWD(userInfo.Id))
-				service.PushToken(token1, userInfo.Id)
+				token = service.CreateUserToken(userInfo.Id, Mydatabase.QueryUserPWD(userInfo.Id))
+				service.PushToken(token, userInfo.Id)
 			}
 			c.JSON(http.StatusOK, UserLoginResponse{
 				Response: common.Response{StatusCode: 0,
