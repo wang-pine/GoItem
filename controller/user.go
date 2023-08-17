@@ -105,6 +105,7 @@ func Login(c *gin.Context) {
 	} else {
 		if StringToMD5(password) == Mydatabase.QueryUserPWD(userInfo.Id) {
 			_, token := service.SearchTokenById(userInfo.Id)
+			ok := service.PushToken(token,)
 			c.JSON(http.StatusOK, UserLoginResponse{
 				Response: common.Response{StatusCode: 0,
 					StatusMsg: "密码正确，登录成功",

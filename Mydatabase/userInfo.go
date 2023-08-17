@@ -38,7 +38,7 @@ func MakeNewUserTable(id int64) (err error) {
 		")ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
 	_, err1 := dbUsers.Exec(sqlStr)
 	if err1 != nil {
-		fmt.Printf("make table error:%v\n", err1)
+		fmt.Printf("make table error:%v\n", err)
 		return err1
 	}
 	return
