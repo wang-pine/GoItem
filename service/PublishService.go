@@ -68,6 +68,17 @@ func Publish(c *gin.Context) {
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
 	//插入进用户分表
 	Mydatabase.InsertVideoIdToUserTable(videoInfo.VideoId, videoInfo.AuthorId)
+	err = Mydatabase.MakeNewFavoriteTable(videoInfo.VideoId)
+	if err != nil {
+		if res == false {
+			c.JSON(http.StatusOK, common.Response{
+				StatusCode: 1,
+				StatusMsg:  "创建粉丝表有误！",
+			})
+			return
+		}
+		return
+	}
 	if res == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
@@ -75,6 +86,7 @@ func Publish(c *gin.Context) {
 		})
 		return
 	}
+
 	if err := c.SaveUploadedFile(data, saveFile); err != nil {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
