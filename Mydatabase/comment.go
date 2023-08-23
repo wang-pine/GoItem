@@ -50,15 +50,6 @@ func MakeCommentTable(videoId int64) (err error) {
 // 在对应的视频列表下插入相关的评论
 func InsertComment(videoId int64, userId int64, comment string) (id int64, date string) {
 	InitCommentDatabase()
-	//时间
-	// year := time.Now().Year()
-	// month := time.Now().Month()
-	// day := time.Now().Day()
-
-	// hour := time.Now().Hour()
-	// minute := time.Now().Minute()
-	// second := time.Now().Second()
-	// currentDate := time.Date(year, month, day, hour, minute, second)
 	currentDate := time.Now().Format("2006-01-02 15:04:05")
 	sqlStr := "INSERT INTO `" +
 		strconv.FormatInt(videoId, 10) +

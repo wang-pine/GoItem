@@ -1,5 +1,6 @@
 #序号为1的用户的关注列表
 #存放本用户的关注用户
+#关注用户1的有哪些
 USE douyin_followers;
 DROP TABLE IF EXISTS `1`;
 CREATE TABLE `1`(

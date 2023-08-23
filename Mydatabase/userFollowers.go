@@ -88,7 +88,9 @@ func GetUserFollowersList(userId int64) (ret []int64, arrayLen int) {
 		}
 		fmt.Printf("scan success ,user id =%v", user_id)
 		fmt.Printf("follower id = %v\n", follower_id)
-		UserFollowersList = append(UserFollowersList, follower_id)
+		if follower_id != 0 {
+			UserFollowersList = append(UserFollowersList, follower_id)
+		}
 	}
 	return UserFollowersList, len(UserFollowersList)
 }
@@ -104,4 +106,14 @@ func IsFollow(user1 int64, user2 int64) bool {
 		}
 	}
 	return false
+}
+
+// 删除follower
+func DeleteFollower(deleteFollowerId int64, userId int64) {
+	InitFollowersDatabase()
+	sqlStr := "DELETE FROM `" + strconv.FormatInt(userId, 10) + "`WHERE follower_id =" + strconv.FormatInt(deleteFollowerId, 10) + ";"
+	_, err := dbFollowers.Exec(sqlStr)
+	if err != nil {
+		fmt.Println("error", err)
+	}
 }

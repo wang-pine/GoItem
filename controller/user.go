@@ -76,6 +76,18 @@ func Register(c *gin.Context) {
 		if err1 != nil {
 			fmt.Println("创建用户分表错误", err1)
 		}
+		err2 := Mydatabase.MakeNewFollowTable(userId)
+		if err2 != nil{
+			fmt.Println("创建用户关注分表错误",err2)
+		}
+		err3 := Mydatabase.MakeNewFollowerTable(userId)
+		if err3 != nil{
+			fmt.Println("创建用户被关注分表错误",err3)
+		}
+		err4 := Mydatabase.MakeNewMessageTable(userId)
+		if err4 != nil{
+			fmt.Println("创建用户信息发送分表错误",err4)
+		}
 		if service.PushToken(token, userId) != true {
 			fmt.Println("insert token error")
 			c.JSON(http.StatusOK, UserLoginResponse{
