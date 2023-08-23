@@ -34,10 +34,18 @@ type User struct {
 
 type Message struct {
 	Id         int64  `json:"id,omitempty"`
+	ToUserId   int64  `json:"to_user_id,omitempty"`
+	FromUserId int64  `json:"from_user_id,omitempty"`
 	Content    string `json:"content,omitempty"`
 	CreateTime string `json:"create_time,omitempty"`
 }
-
+type MessageRender struct {
+	Id         int64  `json:"id,omitempty"`
+	ToUserId   int64  `json:"to_user_id,omitempty"`
+	FromUserId int64  `json:"from_user_id,omitempty"`
+	Content    string `json:"content,omitempty"`
+	CreateTime int    `json:"create_time,omitempty"`
+}
 type MessageSendEvent struct {
 	UserId     int64  `json:"user_id,omitempty"`
 	ToUserId   int64  `json:"to_user_id,omitempty"`

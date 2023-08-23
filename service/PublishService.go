@@ -58,8 +58,8 @@ func Publish(c *gin.Context) {
 	new_video.CoverUrl = ""
 	new_video.FavoriteCount = userinfo.FavoriteCount
 	new_video.IsFavorite = false
-	//new_video.PlayUrl = "http://localhost:8888/static/" + finalName
-	new_video.PlayUrl = "http://192.168.3.10:8888/static/" + finalName
+	new_video.PlayUrl = "http://localhost:8888/static/" + finalName
+	//new_video.PlayUrl = "http://192.168.3.10:8888/static/" + finalName
 	var videoInfo common.Videoinfo
 	ConvertUserVideoToVideoIfo(&userinfo, &new_video, &videoInfo)
 	videoInfo.VideoTitle = title
@@ -68,6 +68,16 @@ func Publish(c *gin.Context) {
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
 	//插入进用户分表
 	Mydatabase.InsertVideoIdToUserTable(videoInfo.VideoId, videoInfo.AuthorId)
+	//创建视频点赞表
+	err = Mydatabase.MakeNewVideoTable(videoInfo.VideoId)
+	if err != nil {
+		c.JSON(http.StatusOK, common.Response{
+			StatusCode: 1,
+			StatusMsg:  "创建视频点赞表失败！",
+		})
+		return
+	}
+
 	if res == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
@@ -75,6 +85,7 @@ func Publish(c *gin.Context) {
 		})
 		return
 	}
+
 	if err := c.SaveUploadedFile(data, saveFile); err != nil {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,

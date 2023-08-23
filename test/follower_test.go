@@ -25,3 +25,6 @@ func TestIsFollow(t *testing.T) {
 	fmt.Println(Mydatabase.IsFollow(2,11))
 	fmt.Println(Mydatabase.IsFollow(2,12))
 }
+func TestDeleteFollower(t *testing.T) {
+	Mydatabase.DeleteFollower(3,1)
+}
