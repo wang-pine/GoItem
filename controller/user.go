@@ -73,6 +73,14 @@ func Register(c *gin.Context) {
 		}
 		//创建用户上传视频的分表
 		err1 := Mydatabase.MakeNewUserTable(userId)
+		//创建用户喜欢的分表
+		err = Mydatabase.MakeNewFavoriteTable(userId)
+		if err != nil {
+			c.JSON(http.StatusOK, UserLoginResponse{
+				Response: common.Response{StatusCode: 1, StatusMsg: "创建用户喜欢列表出错"},
+			})
+			return
+		}
 		if err1 != nil {
 			fmt.Println("创建用户分表错误", err1)
 		}
@@ -118,8 +126,9 @@ func Login(c *gin.Context) {
 			ok, token := service.SearchTokenById(userInfo.Id)
 			if !ok {
 				token = service.CreateUserToken(userInfo.Id, Mydatabase.QueryUserPWD(userInfo.Id))
-				service.PushToken(token, userInfo.Id)
+
 			}
+			service.PushToken(token, userInfo.Id)
 			c.JSON(http.StatusOK, UserLoginResponse{
 				Response: common.Response{StatusCode: 0,
 					StatusMsg: "密码正确，登录成功",

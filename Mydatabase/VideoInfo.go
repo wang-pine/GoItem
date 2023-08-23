@@ -35,7 +35,7 @@ func MakeNewVideoTable(id int64) (err error) {
 	sqlStr := "CREATE TABLE `" + strconv.FormatInt(id, 10) + "`(" +
 		"user_id BIGINT(20) NOT NULL," +
 		"video_id BIGINT(20) NOT NULL," +
-		"PRIMARY KEY(user_id)" +
+		"is_delete int(1) NOT NULL default 0" +
 		")ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
 	_, err1 := dbVideos.Exec(sqlStr)
 	if err1 != nil {
@@ -107,4 +107,14 @@ func IsFavorite(UserID int64, VideoID int64) bool {
 		}
 	}
 	return false
+}
+
+// 逻辑删除，当delete表示1的时候表示删除
+func DeleteUserIdToVideoTable(videoId int64, userId int64) {
+	err := InitVideosDatabase()
+	if err != nil {
+		return
+	}
+	sqlStr := "UPDATE `" + strconv.FormatInt(videoId, 10) + "` SET is_delete = 1" + " WHERE user_id = " + strconv.FormatInt(userId, 10)
+	execVideoDatabase(sqlStr)
 }

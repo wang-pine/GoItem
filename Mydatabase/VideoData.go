@@ -6,27 +6,6 @@ import (
 	"fmt"
 )
 
-/*
-type Videoinfo struct {
-	VideoId               int64  `gorm:"type:int(20); not null" json:"video_id" binding:"required"`
-	AuthorId              int64  `gorm:"type:int(20); not null" json:"author_id" binding:"required"`
-	AuthorName            string `gorm:"type:varchar(20); not null" json:"author_name" binding:"required"`
-	AuthorFollowCount     int64  `gorm:"type:int(20); not null" json:"author_follow_count" binding:"required"`
-	AuthorFollowerCount   int64  `gorm:"type:int(20); not null" json:"author_follower_count" binding:"required"`
-	AuthorAvator          string `gorm:"type:varchar(20); not null" json:"author_avator" binding:"required"`
-	AuthorBackgroundImage string `gorm:"type:varchar(120); not null" json:"author_background_image" binding:"required"`
-	AuthorSignature       string `gorm:"type:varchar(120); not null" json:"author_signature" binding:"required"`
-	AuthorTotalFavorited  int64  `gorm:"type:int(20); not null" json:"author_total_favorited" binding:"required"`
-	AuthorWorkCount       int64  `gorm:"type:int(20); not null" json:"author_work_count" binding:"required"`
-	AuthorFavoriteCount   int64  `gorm:"type:int(20); not null" json:"author_favorite_count" binding:"required"`
-	VideoPlayUrl          string `gorm:"type:varchar(120); not null" json:"video_play_url" binding:"required"`
-	VideoCoverUrl         string `gorm:"type:varchar(120); not null" json:"video_cover_url" binding:"required"`
-	VideoFavoriteCount    int64  `gorm:"type:int(20); not null" json:"video_favorite_count" binding:"required"`
-	VideoCommentCount     int64  `gorm:"type:int(20); not null" json:"video_comment_count" binding:"required"`
-	VideoTitle            string `gorm:"type:varchar(30); not null" json:"video_title" binding:"required"`
-	VideoTime             string `gorm:"type:varchar(30); not null" json:"video_time" binding:"required"`
-}
-*/
 // 通过视频id查询Videoinfo信息
 func QueryVideoById(id int64) common.Videoinfo {
 	db, err := GetDB()
