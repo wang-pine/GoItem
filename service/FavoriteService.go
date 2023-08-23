@@ -20,9 +20,8 @@ func FavoriteAction(c *gin.Context) {
 	if res_tag == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
-			StatusMsg:  "Userxxxx doesn't exist",
+			StatusMsg:  "User doesn't exist",
 		})
-		fmt.Println("1")
 		return
 	}
 
@@ -34,12 +33,14 @@ func FavoriteAction(c *gin.Context) {
 			StatusCode: 1,
 			StatusMsg:  "videoId 不合法！",
 		})
-		fmt.Println("2")
 		return
 	}
 	//1是点赞操作，增加
 	if actionType == "1" {
 		res := Mydatabase.InsertUserIdToFavoriteTable(videoID, userId)
+		//维护两个表
+		Mydatabase.InsertUserIdToFavoriteTable(videoID, userId)
+		Mydatabase.InsertUserIdToVideoTable(videoID, userId)
 		if res == false {
 			c.JSON(http.StatusOK, common.Response{
 				StatusCode: 1,
@@ -58,6 +59,7 @@ func FavoriteAction(c *gin.Context) {
 
 	if actionType == "2" {
 		res := Mydatabase.DeleteUserIdToFavoriteTable(videoID, userId)
+		Mydatabase.DeleteUserIdToVideoTable(videoID, userId)
 		if res == false {
 			c.JSON(http.StatusOK, common.Response{
 				StatusCode: 1,

@@ -43,7 +43,7 @@ func FavoriteList(c *gin.Context) {
 		return
 	}
 	//2.查询用户喜欢的所有视频
-	videoId, size := Mydatabase.GetUserVideosList(userId)
+	videoId, size := Mydatabase.GetUserFavoriteVideoList(userId)
 	if size == 0 {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,

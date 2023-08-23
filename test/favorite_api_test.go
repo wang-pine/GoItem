@@ -23,16 +23,21 @@ func TestFavoriteMake(t *testing.T) {
 }
 
 func TestFavoriteInsert(t *testing.T) {
-	Mydatabase.InsertUserIdToFavoriteTable(5, 3)
+	Mydatabase.InsertUserIdToFavoriteTable(2, 5)
 
 }
 
 func TestFavoriteDelete(t *testing.T) {
-	Mydatabase.DeleteUserIdToFavoriteTable(5, 2)
+	Mydatabase.DeleteUserIdToFavoriteTable(2, 5)
 
 }
 
 func TestFavoriteQuery(t *testing.T) {
-	fmt.Println(Mydatabase.GetFavoriteVideoList(5))
+	fmt.Println(Mydatabase.GetFavoriteVideoList(5, 2))
+
+}
+func TestDelete(t *testing.T) {
+	//Mydatabase.DeleteUserIdToVideoTable(10, 1)
+	Mydatabase.InsertUserIdToVideoTable(10, 1)
 
 }

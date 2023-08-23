@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS `1`;
 CREATE TABLE `1`(
     favorite_user_id BIGINT(20) NOT NULL,
     video_id BIGINT(20) NOT NULL ,
-    PRIMARY KEY(favorite_user_id)
+    is_delete int(1) NOT NULL default 0
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 INSERT INTO `1`(
     favorite_user_id,

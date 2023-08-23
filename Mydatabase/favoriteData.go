@@ -28,12 +28,12 @@ func InitFavoriteDatabase() (err error) {
 
 // 根据视频的id创建每个视频的用户点赞的分表
 // 这里需要传入视频的id
-func MakeNewFavoriteTable(videoId int64) (err error) {
+func MakeNewFavoriteTable(userId int64) (err error) {
 	err = InitFavoriteDatabase()
 	if err != nil {
 		return err
 	}
-	sqlStr := "CREATE TABLE `" + strconv.FormatInt(videoId, 10) + "`(" +
+	sqlStr := "CREATE TABLE `" + strconv.FormatInt(userId, 10) + "`(" +
 		"favorite_video_id BIGINT(20) NOT NULL," +
 		"user_id BIGINT(20) NOT NULL," +
 		"is_delete int(1) NOT NULL DEFAULT 0" +
@@ -70,8 +70,19 @@ func InsertUserIdToFavoriteTable(videoId int64, userId int64) bool {
 	if err != nil {
 		return false
 	}
-	sqlStr := "INSERT INTO `" + strconv.FormatInt(videoId, 10) + "`(favorite_video_id,user_id)VALUES(" + strconv.FormatInt(videoId, 10) + "," + strconv.FormatInt(userId, 10) + ");"
-	return execFavoriteDatabase(sqlStr)
+	videos, size := GetFavoriteVideoList(userId, videoId)
+	if size == 0 {
+		sqlStr := "INSERT INTO `" + strconv.FormatInt(userId, 10) + "`(favorite_video_id,user_id)VALUES(" + strconv.FormatInt(videoId, 10) + "," + strconv.FormatInt(userId, 10) + ");"
+		return execFavoriteDatabase(sqlStr)
+	}
+	for i := 0; i < size; i++ {
+		sqlStr := "UPDATE `" + strconv.FormatInt(userId, 10) + "` SET is_delete = 0" + " WHERE favorite_video_id = " + strconv.FormatInt(videos[i], 10)
+		res := execFavoriteDatabase(sqlStr)
+		if res == false {
+			return false
+		}
+	}
+	return true
 }
 
 // 逻辑删除，当delete表示1的时候表示删除
@@ -80,18 +91,64 @@ func DeleteUserIdToFavoriteTable(videoId int64, userId int64) bool {
 	if err != nil {
 		return false
 	}
-	sqlStr := "UPDATE `" + strconv.FormatInt(videoId, 10) + "` SET is_delete = 1" + " WHERE user_id = " + strconv.FormatInt(userId, 10)
-	return execFavoriteDatabase(sqlStr)
+	videos, size := GetFavoriteVideoList(userId, videoId)
+	if size == 0 {
+		return false
+	}
+	for i := 0; i < size; i++ {
+		sqlStr := "UPDATE `" + strconv.FormatInt(userId, 10) + "` SET is_delete = 1" + " WHERE favorite_video_id = " + strconv.FormatInt(videos[i], 10)
+		res := execFavoriteDatabase(sqlStr)
+		if res == false {
+			return false
+		}
+	}
+	return true
 }
 
-// 查询视频的点赞用户id表
-func GetFavoriteVideoList(videoId int64) (ret []int64, arrayLen int) {
+// 查询用户的喜欢的视频id表
+func GetFavoriteVideoList(userId int64, videoId int64) (ret []int64, arrayLen int) {
 	err := InitFavoriteDatabase()
 	if err != nil {
 		return nil, 0
 	}
-	var UserFavorUsersList []int64
-	sqlStr := "SELECT favorite_video_id,user_id,is_delete FROM `" + strconv.FormatInt(videoId, 10) + "` WHERE user_id > 0"
+	var VideoFavorUsersList []int64
+	sqlStr := "SELECT favorite_video_id,user_id,is_delete FROM `" + strconv.FormatInt(userId, 10) + "` WHERE favorite_video_id = " + strconv.FormatInt(videoId, 10)
+	rows, err := dbFavorite.Query(sqlStr)
+	if err != nil {
+		fmt.Printf("query failed, err:%v\n", err)
+		return
+	}
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			return
+		} // 释放数据库连接
+	}()
+	var user_id int64
+	var video_id int64
+	var is_delete int64
+	for rows.Next() {
+		err := rows.Scan(&video_id, &user_id, &is_delete)
+		if err != nil {
+			fmt.Printf("scan failed, err:%v\n", err)
+			return
+		}
+		fmt.Printf("scan success ,video id =%v", video_id)
+		fmt.Printf("user id = %v\n", user_id)
+		VideoFavorUsersList = append(VideoFavorUsersList, video_id)
+
+	}
+	return VideoFavorUsersList, len(VideoFavorUsersList)
+}
+
+// 查询用户的喜欢的视频id表
+func GetUserFavoriteVideoList(userId int64) (ret []int64, arrayLen int) {
+	err := InitFavoriteDatabase()
+	if err != nil {
+		return nil, 0
+	}
+	var VideoFavorUsersList []int64
+	sqlStr := "SELECT favorite_video_id,user_id,is_delete FROM `" + strconv.FormatInt(userId, 10) + "` WHERE favorite_video_id > 0 "
 	rows, err := dbFavorite.Query(sqlStr)
 	if err != nil {
 		fmt.Printf("query failed, err:%v\n", err)
@@ -115,8 +172,9 @@ func GetFavoriteVideoList(videoId int64) (ret []int64, arrayLen int) {
 		fmt.Printf("scan success ,video id =%v", video_id)
 		fmt.Printf("user id = %v\n", user_id)
 		if is_delete == 0 {
-			UserFavorUsersList = append(UserFavorUsersList, user_id)
+			VideoFavorUsersList = append(VideoFavorUsersList, video_id)
 		}
+
 	}
-	return UserFavorUsersList, len(UserFavorUsersList)
+	return VideoFavorUsersList, len(VideoFavorUsersList)
 }
