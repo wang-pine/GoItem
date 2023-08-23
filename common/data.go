@@ -1,3 +1,4 @@
+
 package common
 
 // 这个文件是数据库使用的结构体

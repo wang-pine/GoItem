@@ -17,11 +17,20 @@ func ConvertVideoInfoToVideo(videoInfo *common.Videoinfo, video *common.Video, u
 	video.Author.FollowCount = videoInfo.AuthorFollowCount
 	video.Author.FollowerCount = videoInfo.AuthorFollowerCount
 	video.Author.IsFollow = Mydatabase.IsFollow(video.Author.Id, userId)
+	
+	video.Author.Avator = videoInfo.AuthorAvator
+	video.Author.BackgroundImage = videoInfo.AuthorBackgroundImage
+	video.Author.Signature = videoInfo.AuthorSignature
+	video.Author.TotalFavorited = videoInfo.AuthorTotalFavorited
+	video.Author.WorkCount = videoInfo.AuthorWorkCount
+	video.Author.FavoriteCount = videoInfo.AuthorFavoriteCount
+	
 	video.PlayUrl = videoInfo.VideoPlayUrl
 	video.CoverUrl = videoInfo.VideoCoverUrl
 	video.FavoriteCount = videoInfo.VideoFavoriteCount
 	video.CommentCount = videoInfo.VideoCommentCount
 	video.IsFavorite = Mydatabase.IsFavorite(userId, video.Id)
+	video.Title = videoInfo.VideoTitle
 }
 
 // 将video信息存入数据库中
@@ -33,12 +42,12 @@ func ConvertVideoToVideoInfo(video *common.Video, videoInfo *common.Videoinfo) {
 	videoInfo.AuthorName = video.Author.Name
 	videoInfo.AuthorFollowCount = video.Author.FollowCount
 	videoInfo.AuthorFollowerCount = video.Author.FollowerCount
-	videoInfo.AuthorAvator = ""
-	videoInfo.AuthorBackgroundImage = ""
-	videoInfo.AuthorSignature = ""
-	videoInfo.AuthorTotalFavorited = 0
-	videoInfo.AuthorWorkCount = 0
-	videoInfo.AuthorFavoriteCount = 0
+	videoInfo.AuthorAvator = video.Author.Avator
+	videoInfo.AuthorBackgroundImage = video.Author.BackgroundImage
+	videoInfo.AuthorSignature = video.Author.Signature
+	videoInfo.AuthorTotalFavorited = video.Author.TotalFavorited
+	videoInfo.AuthorWorkCount = video.Author.WorkCount
+	videoInfo.AuthorFavoriteCount = video.Author.FavoriteCount
 	videoInfo.VideoPlayUrl = video.PlayUrl
 	videoInfo.VideoCoverUrl = video.CoverUrl
 	videoInfo.VideoFavoriteCount = video.FavoriteCount
@@ -54,6 +63,12 @@ func ConvertUserInfoToUser(userInfo *common.Userinfo, user *common.User, userId 
 	user.FollowCount = userInfo.FollowCount
 	user.FollowerCount = userInfo.FollowerCount
 	user.IsFollow = Mydatabase.IsFollow(user.Id, userId)
+	user.Avator = userInfo.Avator
+	user.BackgroundImage = userInfo.BackgroundImage
+	user.Signature = userInfo.Signature
+	user.TotalFavorited = userInfo.TotalFavorited
+	user.WorkCount = userInfo.WorkCount
+	user.FavoriteCount = userInfo.FavoriteCount
 }
 
 // user是前端向后端传递的信息
@@ -64,12 +79,12 @@ func ConvertUserToUserIfo(user *common.User, userInfo *common.Userinfo) {
 	userInfo.Name = user.Name
 	userInfo.FollowCount = user.FollowCount
 	userInfo.FollowerCount = user.FollowerCount
-	userInfo.Avator = ""
-	userInfo.BackgroundImage = ""
-	userInfo.Signature = ""
-	userInfo.TotalFavorited = 0
-	userInfo.WorkCount = 0
-	userInfo.FavoriteCount = 0
+	userInfo.Avator = user.Avator
+	userInfo.BackgroundImage = user.BackgroundImage
+	userInfo.Signature = user.Signature
+	userInfo.TotalFavorited = user.TotalFavorited
+	userInfo.WorkCount = user.WorkCount
+	userInfo.FavoriteCount = user.FavoriteCount
 }
 
 // user是前端向后端传递的信息
