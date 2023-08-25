@@ -15,3 +15,5 @@ use ./common
 use ./utils
 
 use ./NoUse
+
+use ./Msg
