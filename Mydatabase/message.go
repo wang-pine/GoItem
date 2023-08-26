@@ -76,9 +76,9 @@ func InsertMessage(fromUserId int64, toUserId int64, content string) (date strin
 }
 
 // 发送某个用户的全部消息列表
-func GetMessageList(userId int64) (messageList []common.Message) {
+func GetMessageList(userId int64, msg_time int64) (messageList []common.Message) {
 	InitMessageDatabase()
-	sqlStr := "SELECT message_id,to_user_id,from_user_id,content,create_time FROM`" + strconv.FormatInt(userId, 10) + "`WHERE message_id >0"
+	sqlStr := "SELECT message_id,to_user_id,from_user_id,content,create_time FROM`" + strconv.FormatInt(userId, 10) + "`WHERE message_id >0 and create_time >" + strconv.FormatInt(msg_time, 10)
 	rows, err := dbMessage.Query(sqlStr)
 	if err != nil {
 		fmt.Printf("query failed, err:%v\n", err)
@@ -91,7 +91,7 @@ func GetMessageList(userId int64) (messageList []common.Message) {
 	var toUserId int64
 	var fromUserId int64
 	var content string
-	var createTime string
+	var createTime int64
 	var message common.Message
 	for rows.Next() {
 		err := rows.Scan(&messageId, &toUserId, &fromUserId, &content, &createTime)

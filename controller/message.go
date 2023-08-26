@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"service"
 	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -64,8 +63,10 @@ func MessageAction(c *gin.Context) {
 // MessageChat all users have same follow list
 func MessageChat(c *gin.Context) {
 	token := c.Query("token")
+	msg_time, _ := strconv.ParseInt(c.Query("pre_msg_time"), 10, 64)
 	toUserId, _ := strconv.ParseInt(c.Query("to_user_id"), 10, 64)
 	ok, userId := service.SearchToken(token)
+	// userId = 2
 	if !ok {
 		fmt.Println("token error")
 		c.JSON(http.StatusOK, common.Response{StatusCode: 1, StatusMsg: "token not exist"})
@@ -73,27 +74,23 @@ func MessageChat(c *gin.Context) {
 	}
 	//注意，这样发送消息的致命缺陷就是消息会重复发送
 	//所以需要用到消息队列
-	messageList := Mydatabase.GetMessageList(userId)
+	messageList := Mydatabase.GetMessageList(userId, msg_time)
 	//var res []common.Message
 	var i int
 	var messageRenderList []common.MessageRender
 	var temp common.MessageRender
 	for i = 0; i < len(messageList); i++ {
 		if messageList[i].ToUserId == toUserId {
-			//strconv.Atoi(messageList[i].CreateTime)
-			time := strings.Trim(messageList[i].CreateTime, " ")
-			time = strings.Trim(time, "-")
-			time = strings.Trim(time, ":")
-			timeInt, _ := strconv.Atoi(time)
-			temp.Id = messageList[i].Id
 			temp.FromUserId = messageList[i].FromUserId
 			temp.ToUserId = messageList[i].ToUserId
-			temp.Content = messageList[i].Content
-			temp.CreateTime = timeInt
-			messageRenderList = append(messageRenderList, temp)
-			//res = append(res, messageList[i])
-			//fmt.Println("此时的消息内容是", messageList[i])
+		} else {
+			temp.FromUserId = messageList[i].ToUserId
+			temp.ToUserId = messageList[i].FromUserId
 		}
+		temp.Id = messageList[i].Id
+		temp.Content = messageList[i].Content
+		temp.CreateTime = messageList[i].CreateTime
+		messageRenderList = append(messageRenderList, temp)
 	}
 	c.JSON(http.StatusOK,
 		ChatResponse{Response: common.Response{StatusCode: 0},
