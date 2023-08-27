@@ -2,6 +2,7 @@ package Mydatabase
 
 import (
 	"common"
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -15,7 +16,7 @@ var dbMessage *sql.DB
 // 本文件用于维护message数据库
 func InitMessageDatabase() (err error) {
 	fmt.Println("正在初始化信息数据库...")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_message"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_message"
 	dbMessage, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {

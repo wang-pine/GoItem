@@ -3,6 +3,7 @@ package service
 import (
 	"Mydatabase"
 	"common"
+	"config"
 	"fmt"
 	"net/http"
 	"path/filepath"
@@ -58,7 +59,7 @@ func Publish(c *gin.Context) {
 	new_video.CoverUrl = ""
 	new_video.FavoriteCount = userinfo.FavoriteCount
 	new_video.IsFavorite = false
-	new_video.PlayUrl = "http://localhost:8888/static/" + finalName
+	new_video.PlayUrl = config.GetLocalAddr() + "/static/" + finalName
 	//new_video.PlayUrl = "http://192.168.3.10:8888/static/" + finalName
 	var videoInfo common.Videoinfo
 	ConvertUserVideoToVideoIfo(&userinfo, &new_video, &videoInfo)

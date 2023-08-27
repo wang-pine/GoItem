@@ -1,6 +1,7 @@
 package Mydatabase
 
 import (
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -11,7 +12,7 @@ var dbFavorite *sql.DB
 // 初始化视频点赞表
 func InitFavoriteDatabase() (err error) {
 	fmt.Printf("正在初始化视频用户点赞列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_favorite"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_favorite"
 	dbFavorite, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {

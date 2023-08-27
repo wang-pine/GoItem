@@ -1,6 +1,7 @@
 package Mydatabase
 
 import (
+	"config"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -10,7 +11,7 @@ import (
 
 func GetDB() (*gorm.DB, error) {
 	// 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_info"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_info"
 	//dsn := "root:zhxdxw123.@tcp(127.0.0.1:3306)/douyin_info"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{

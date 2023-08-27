@@ -2,6 +2,7 @@ package Mydatabase
 
 import (
 	"common"
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -13,7 +14,7 @@ var dbComment *sql.DB
 // 初始化每个视频的评论数据库
 func InitCommentDatabase() (err error) {
 	fmt.Printf("正在初始化视频评论列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_comment"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_comment"
 	dbComment, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {

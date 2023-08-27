@@ -1,11 +1,12 @@
 package Mydatabase
 
 import (
+	"config"
 	"crypto/md5"
 	"database/sql"
 	"encoding/hex"
 	"fmt"
-
+	
 	_ "github.com/go-sql-driver/mysql" //导入包但不使用，init()
 )
 
@@ -14,7 +15,7 @@ var dbPWD *sql.DB
 // 链接账号密码数据表
 func InitPWDDatabase() (err error) {
 	fmt.Printf("正在初始化用户账号密码数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_info"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_info"
 	dbPWD, err = sql.Open("mysql", dsn)
 	//注意这里是=，因为go会自动检查局部变量覆盖全局变量，切记
 	//open函数是不会检查用户名和密码的

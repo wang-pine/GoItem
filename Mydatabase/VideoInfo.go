@@ -1,6 +1,7 @@
 package Mydatabase
 
 import (
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -13,7 +14,7 @@ var dbVideos *sql.DB
 // 这里用来对单个视频的分表进行维护
 func InitVideosDatabase() (err error) {
 	fmt.Printf("正在初始化视频用户点赞列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_videos"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_videos"
 	dbVideos, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {

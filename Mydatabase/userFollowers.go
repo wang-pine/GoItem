@@ -1,6 +1,7 @@
 package Mydatabase
 
 import (
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -15,7 +16,7 @@ var dbFollowers *sql.DB
 // 这里用来对单个用户的分表进行维护
 func InitFollowersDatabase() (err error) {
 	fmt.Printf("正在初始化用户视频列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_followers"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_followers"
 	dbFollowers, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {

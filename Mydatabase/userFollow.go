@@ -1,6 +1,7 @@
 package Mydatabase
 
 import (
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -13,7 +14,7 @@ var dbFollow *sql.DB
 // 维护用户关注的人
 func InitFollowDatabase() (err error) {
 	fmt.Printf("正在初始化用户视频列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_follow"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_follow"
 	dbFollow, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {
