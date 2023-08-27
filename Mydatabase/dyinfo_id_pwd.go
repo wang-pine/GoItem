@@ -1,12 +1,18 @@
 package Mydatabase
 
+/*
+********************
+存储用户账号密码
+********************
+*/
+
 import (
 	"config"
 	"crypto/md5"
 	"database/sql"
 	"encoding/hex"
 	"fmt"
-	
+
 	_ "github.com/go-sql-driver/mysql" //导入包但不使用，init()
 )
 

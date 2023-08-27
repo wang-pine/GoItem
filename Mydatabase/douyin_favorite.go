@@ -1,5 +1,9 @@
 package Mydatabase
-
+/*
+********************
+存储用户点赞的视频
+********************
+*/
 import (
 	"config"
 	"database/sql"
@@ -27,8 +31,8 @@ func InitFavoriteDatabase() (err error) {
 	return
 }
 
-// 根据视频的id创建每个视频的用户点赞的分表
-// 这里需要传入视频的id
+// 根据用户id创建用户的点赞分表
+// 这里需要传入用户的id
 func MakeNewFavoriteTable(userId int64) (err error) {
 	err = InitFavoriteDatabase()
 	if err != nil {

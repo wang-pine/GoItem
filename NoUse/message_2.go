@@ -1,5 +1,6 @@
-package controller
+package nouse
 
+//消息队列
 import (
 	//"controller"
 	"common"

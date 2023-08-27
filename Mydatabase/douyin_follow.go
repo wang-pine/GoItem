@@ -1,5 +1,9 @@
 package Mydatabase
-
+/*
+********************
+存储用户订阅的人
+********************
+*/
 import (
 	"config"
 	"database/sql"

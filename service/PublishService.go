@@ -78,7 +78,15 @@ func Publish(c *gin.Context) {
 		})
 		return
 	}
-
+	//创建视频评论表
+	err = Mydatabase.MakeCommentTable(videoInfo.VideoId)
+	if err != nil {
+		c.JSON(http.StatusOK, common.Response{
+			StatusCode: 1,
+			StatusMsg:  "创建视频评论表失败！",
+		})
+		return
+	}
 	if res == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,

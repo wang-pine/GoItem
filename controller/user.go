@@ -40,6 +40,11 @@ type UserResponse struct {
 	User common.User `json:"user"`
 }
 
+type UserDTOResponse struct {
+	common.Response
+	User common.User `json:"user"`
+}
+
 // MD5加密
 func StringToMD5(PWD string) string {
 	w := md5.New()
@@ -141,4 +146,28 @@ func Login(c *gin.Context) {
 		}
 		fmt.Println("用户存在")
 	}
+}
+func UserInfo(c *gin.Context) {
+	id, err := strconv.Atoi(c.Query("user_id"))
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	//把user换成获取到的数据就行了
+	userInfo := Mydatabase.QueryUserById(int64(id))
+	var user common.User
+	service.ConvertUserInfoToUser(&userInfo, &user, int64(id))
+	if userInfo.Id != 0 {
+		c.JSON(http.StatusOK, UserDTOResponse{
+			Response: common.Response{StatusCode: 0},
+			User:     user,
+		})
+	} else {
+		c.JSON(http.StatusOK, UserDTOResponse{
+			Response: common.Response{
+				StatusCode: 1,
+				StatusMsg:  "User doesn't exist",
+			},
+		})
+	}
+
 }

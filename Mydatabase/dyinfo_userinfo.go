@@ -1,5 +1,10 @@
 package Mydatabase
 
+/*
+********************
+存储用户完整信息
+********************
+*/
 //用来对基本信息进行维护
 import (
 	"common"
@@ -33,7 +38,7 @@ func QueryUserById(id int64) common.Userinfo {
 }
 
 // 通过name查询userinfo信息
-func QueryUserByName(name string) (common.Userinfo){
+func QueryUserByName(name string) common.Userinfo {
 	db, err := GetDB()
 	var user common.Userinfo
 	db.Where("name = ?", name).Find(&user)

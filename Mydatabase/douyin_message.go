@@ -1,5 +1,9 @@
 package Mydatabase
-
+/*
+********************
+存储用户的聊天记录
+********************
+*/
 import (
 	"common"
 	"config"

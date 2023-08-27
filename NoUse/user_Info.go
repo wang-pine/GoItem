@@ -1,20 +1,4 @@
-package controller
-
-import (
-	"Mydatabase"
-	"common"
-	"log"
-	"net/http"
-	"service"
-	"strconv"
-
-	"github.com/gin-gonic/gin"
-)
-
-type UserDTOResponse struct {
-	common.Response
-	User common.User `json:"user"`
-}
+package nouse
 
 /*
 // 接口规定要的
@@ -51,27 +35,3 @@ type UserDTOResponse struct {
 		int(testUser.ID): testUser,
 	}
 */
-func UserInfo(c *gin.Context) {
-	id, err := strconv.Atoi(c.Query("user_id"))
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-	//把user换成获取到的数据就行了
-	userInfo := Mydatabase.QueryUserById(int64(id))
-	var user common.User
-	service.ConvertUserInfoToUser(&userInfo, &user, int64(id))
-	if userInfo.Id != 0 {
-		c.JSON(http.StatusOK, UserDTOResponse{
-			Response: common.Response{StatusCode: 0},
-			User:     user,
-		})
-	} else {
-		c.JSON(http.StatusOK, UserDTOResponse{
-			Response: common.Response{
-				StatusCode: 1,
-				StatusMsg:  "User doesn't exist",
-			},
-		})
-	}
-
-}

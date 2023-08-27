@@ -26,12 +26,17 @@ func RelationAction(c *gin.Context) {
 		fmt.Println("Token not exist")
 	}
 	if actionType == "1" {
+		//1表示对目标用户进行关注
 		Mydatabase.InsertFollowIdToUserTable(toUserId, userId)
 		Mydatabase.InsertFollowerIdToUserTable(userId, toUserId)
+		//改库
+		
 		c.JSON(http.StatusOK, common.Response{StatusCode: 0, StatusMsg: "关注成功"})
 	} else if actionType == "2" {
+		//2表示对目标用户进行取关
 		Mydatabase.DeleteFollow(toUserId, userId)
 		Mydatabase.DeleteFollower(userId, toUserId)
+
 		c.JSON(http.StatusOK, common.Response{StatusCode: 0, StatusMsg: "取消关注成功"})
 	} else {
 		c.JSON(http.StatusOK, common.Response{StatusCode: 1, StatusMsg: "关注失败"})

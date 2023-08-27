@@ -1,5 +1,9 @@
 package Mydatabase
-
+/*
+********************
+存储用户的关注者
+********************
+*/
 import (
 	"config"
 	"database/sql"

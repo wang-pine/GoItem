@@ -1,6 +1,11 @@
 package Mydatabase
-
+/*
+********************
+存储用户投稿的视频
+********************
+*/
 import (
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -11,9 +16,10 @@ import (
 var dbUsers *sql.DB
 
 // 这里用来对单个用户的分表进行维护
+//单个用户的分表存放的是该用户上传的视频
 func InitUsersDatabase() (err error) {
 	fmt.Printf("正在初始化用户视频列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_users"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_users"
 	dbUsers, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {
@@ -24,7 +30,9 @@ func InitUsersDatabase() (err error) {
 		return
 	}
 	fmt.Println("链接数据库成功")
-	dbUsers.SetMaxIdleConns(10) //设置数据库连接池的最大连接数
+	dbUsers.SetMaxIdleConns(100)
+
+	//设置数据库连接池的最大连接数
 	return
 }
 

@@ -1,5 +1,10 @@
 package Mydatabase
 
+/*
+********************
+存储视频下用户的评论
+********************
+*/
 import (
 	"common"
 	"config"
