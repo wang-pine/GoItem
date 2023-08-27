@@ -37,7 +37,7 @@ func InsertNewUser(PWD string) (error, int64) {
 	InitPWDDatabase()
 	md5Str := StringToMD5(PWD)
 	//fmt.Println(md5Str)
-	sqlStr := "INSERT INTO id_pwd(PWD) VALUES('" + md5Str + "')"
+	sqlStr := "INSERT INTO ID_PWD(PWD) VALUES('" + md5Str + "')"
 	ret, err := dbPWD.Exec(sqlStr)
 	if err != nil {
 		fmt.Printf("insert failed,err%v\n", err)
@@ -64,7 +64,7 @@ func StringToMD5(PWD string) string {
 // 数据库中查询用户的密码
 func QueryUserPWD(id int64) (PWD string) {
 	InitPWDDatabase()
-	sqlStr := "select PWD FROM id_pwd WHERE id = ?"
+	sqlStr := "select PWD FROM ID_PWD WHERE id = ?"
 	dbPWD.QueryRow(sqlStr, id).Scan(&PWD)
 	return PWD
 }

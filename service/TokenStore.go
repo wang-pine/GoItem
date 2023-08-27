@@ -18,13 +18,13 @@ var idStore = make(map[int64]string)
 // 维护两个哈希表实现键值对的快速查询
 func PushToken(token string, userId int64) bool {
 	userIdstr := strconv.FormatInt(userId, 10)
-	//if tokenStore[token] == 0 {
-	//	tokenStore[token] = userId
-	//	idStore[userId] = token
-	//} else {
-	//	return false
-	//}
-	//return true
+	// if tokenStore[token] == 0 {
+	// 	tokenStore[token] = userId
+	// 	idStore[userId] = token
+	// } else {
+	// 	return false
+	// }
+	// return true
 	tag, _ := util.Get("token")
 	if tag == false {
 		util.Set(token, userIdstr)
