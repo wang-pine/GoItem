@@ -1,4 +1,4 @@
-package NoUse
+package nouse
 
 //"github.com/your/package/douyinpb"
 

@@ -1,4 +1,4 @@
-package NoUse
+package nouse
 /*
 	func Register(c *gin.Context) {
 		username := c.Query("username")
