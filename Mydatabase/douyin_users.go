@@ -1,4 +1,5 @@
 package Mydatabase
+
 /*
 ********************
 存储用户投稿的视频
@@ -16,7 +17,7 @@ import (
 var dbUsers *sql.DB
 
 // 这里用来对单个用户的分表进行维护
-//单个用户的分表存放的是该用户上传的视频
+// 单个用户的分表存放的是该用户上传的视频
 func InitUsersDatabase() (err error) {
 	fmt.Printf("正在初始化用户视频列表数据库...\n")
 	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_users"
@@ -49,6 +50,7 @@ func MakeNewUserTable(id int64) (err error) {
 		fmt.Printf("make table error:%v\n", err)
 		return err1
 	}
+	dbUsers.Close()
 	return
 }
 
@@ -58,6 +60,7 @@ func InsertVideoIdToUserTable(videoId int64, userId int64) {
 	InitUsersDatabase()
 	sqlStr := "INSERT INTO `" + strconv.FormatInt(userId, 10) + "`(video_id,user_id)VALUES(" + strconv.FormatInt(videoId, 10) + "," + strconv.FormatInt(userId, 10) + ");"
 	execDatabase(sqlStr)
+	dbUsers.Close()
 }
 
 // 这是执行数据库语句的函数
@@ -103,5 +106,6 @@ func GetUserVideosList(userId int64) (ret []int64, arrayLen int) {
 		fmt.Printf("viideo id = %v\n", video_id)
 		UserVideoList = append(UserVideoList, video_id)
 	}
+	dbUsers.Close()
 	return UserVideoList, len(UserVideoList)
 }

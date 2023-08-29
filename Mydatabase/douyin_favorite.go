@@ -1,4 +1,5 @@
 package Mydatabase
+
 /*
 ********************
 存储用户点赞的视频
@@ -48,6 +49,7 @@ func MakeNewFavoriteTable(userId int64) (err error) {
 		fmt.Printf("make table error:%v\n", err)
 		return err
 	}
+	dbFavorite.Close()
 	return
 }
 
@@ -87,6 +89,7 @@ func InsertUserIdToFavoriteTable(videoId int64, userId int64) bool {
 			return false
 		}
 	}
+	dbFavorite.Close()
 	return true
 }
 
@@ -107,6 +110,7 @@ func DeleteUserIdToFavoriteTable(videoId int64, userId int64) bool {
 			return false
 		}
 	}
+	dbFavorite.Close()
 	return true
 }
 
@@ -143,6 +147,7 @@ func GetFavoriteVideoList(userId int64, videoId int64) (ret []int64, arrayLen in
 		VideoFavorUsersList = append(VideoFavorUsersList, video_id)
 
 	}
+	dbFavorite.Close()
 	return VideoFavorUsersList, len(VideoFavorUsersList)
 }
 
@@ -181,5 +186,6 @@ func GetUserFavoriteVideoList(userId int64) (ret []int64, arrayLen int) {
 		}
 
 	}
+	dbFavorite.Close()
 	return VideoFavorUsersList, len(VideoFavorUsersList)
 }

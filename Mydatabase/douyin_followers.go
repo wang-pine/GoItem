@@ -1,4 +1,5 @@
 package Mydatabase
+
 /*
 ********************
 存储用户的关注者
@@ -48,6 +49,7 @@ func MakeNewFollowerTable(id int64) (err error) {
 		fmt.Printf("make table error:%v\n", err1)
 		return err1
 	}
+	dbFollowers.Close()
 	return
 }
 
@@ -67,6 +69,7 @@ func InsertFollowerIdToUserTable(followerId int64, userId int64) {
 		return
 	}
 	fmt.Println("运行成功的id是", id)
+	dbFollowers.Close()
 }
 
 // 查询该用户的人员表
@@ -97,6 +100,7 @@ func GetUserFollowersList(userId int64) (ret []int64, arrayLen int) {
 			UserFollowersList = append(UserFollowersList, follower_id)
 		}
 	}
+	dbFollowers.Close()
 	return UserFollowersList, len(UserFollowersList)
 }
 
@@ -110,6 +114,7 @@ func IsFollow(user1 int64, user2 int64) bool {
 			return true
 		}
 	}
+	dbFollowers.Close()
 	return false
 }
 
@@ -120,5 +125,7 @@ func DeleteFollower(deleteFollowerId int64, userId int64) {
 	_, err := dbFollowers.Exec(sqlStr)
 	if err != nil {
 		fmt.Println("error", err)
+		return
 	}
+	dbFollowers.Close()
 }

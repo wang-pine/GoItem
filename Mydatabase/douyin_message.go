@@ -1,4 +1,5 @@
 package Mydatabase
+
 /*
 ********************
 存储用户的聊天记录
@@ -50,6 +51,7 @@ func MakeNewMessageTable(id int64) (err error) {
 	if err != nil {
 		return err
 	}
+	dbMessage.Close()
 	return
 }
 func InsertMessage(fromUserId int64, toUserId int64, content string) (date string, err error) {
@@ -77,6 +79,7 @@ func InsertMessage(fromUserId int64, toUserId int64, content string) (date strin
 	if err != nil {
 		return currentTime, err
 	}
+	dbMessage.Close()
 	return
 }
 
@@ -111,5 +114,6 @@ func GetMessageList(userId int64, msg_time int64) (messageList []common.Message)
 		message.CreateTime = createTime
 		messageList = append(messageList, message)
 	}
+	dbMessage.Close()
 	return messageList
 }

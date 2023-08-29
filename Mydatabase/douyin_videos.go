@@ -1,4 +1,5 @@
 package Mydatabase
+
 /*
 **************************
 存储每个视频被哪些用户点赞
@@ -47,6 +48,7 @@ func MakeNewVideoTable(id int64) (err error) {
 		fmt.Printf("make table error:%v\n", err)
 		return err1
 	}
+	dbVideos.Close()
 	return
 }
 
@@ -56,6 +58,7 @@ func InsertUserIdToVideoTable(videoId int64, userId int64) {
 	InitVideosDatabase()
 	sqlStr := "INSERT INTO `" + strconv.FormatInt(videoId, 10) + "`(user_id,video_id)VALUES(" + strconv.FormatInt(userId, 10) + "," + strconv.FormatInt(videoId, 10) + ");"
 	execVideoDatabase(sqlStr)
+	dbVideos.Close()
 }
 
 // 这是执行数据库语句的函数
@@ -99,6 +102,7 @@ func GetFavoriteUsersList(videoId int64) (ret []int64, arrayLen int) {
 		fmt.Printf("user id = %v\n", user_id)
 		VideoFavorUsersList = append(VideoFavorUsersList, user_id)
 	}
+	dbVideos.Close()
 	return VideoFavorUsersList, len(VideoFavorUsersList)
 }
 
@@ -111,6 +115,7 @@ func IsFavorite(UserID int64, VideoID int64) bool {
 			return true
 		}
 	}
+	dbVideos.Close()
 	return false
 }
 
@@ -122,4 +127,5 @@ func DeleteUserIdToVideoTable(videoId int64, userId int64) {
 	}
 	sqlStr := "UPDATE `" + strconv.FormatInt(videoId, 10) + "` SET is_delete = 1" + " WHERE user_id = " + strconv.FormatInt(userId, 10)
 	execVideoDatabase(sqlStr)
+	dbVideos.Close()
 }

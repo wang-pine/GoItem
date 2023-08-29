@@ -50,6 +50,7 @@ func MakeCommentTable(videoId int64) (err error) {
 		fmt.Printf("make table error:%v\n", err)
 		return err1
 	}
+	dbComment.Close()
 	return
 }
 
@@ -75,6 +76,7 @@ func InsertComment(videoId int64, userId int64, comment string) (id int64, date 
 		return
 	}
 	fmt.Println("运行成功的id是", id)
+	dbComment.Close()
 	return int64(id), currentDate
 }
 
@@ -93,6 +95,7 @@ func DeleteComment(videoId int64, commentId int64) (err error) {
 		return
 	}
 	fmt.Println("运行成功的id是", id)
+	dbComment.Close()
 	return
 }
 
@@ -133,5 +136,6 @@ func GetCommentList(videoId int64) (commentList []common.Comment) {
 	// for i = 0; i < len(commentList); i++ {
 	// 	fmt.Println(commentList[i])
 	// }
+	dbComment.Close()
 	return commentList
 }

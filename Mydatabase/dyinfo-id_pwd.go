@@ -56,6 +56,7 @@ func InsertNewUser(PWD string) (error, int64) {
 		return err, 0
 	}
 	fmt.Println("插入成功id=", id)
+	dbPWD.Close()
 	return err, int64(id)
 }
 
@@ -72,6 +73,7 @@ func QueryUserPWD(id int64) (PWD string) {
 	InitPWDDatabase()
 	sqlStr := "select PWD FROM ID_PWD WHERE id = ?"
 	dbPWD.QueryRow(sqlStr, id).Scan(&PWD)
+	dbPWD.Close()
 	return PWD
 }
 
