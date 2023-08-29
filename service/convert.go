@@ -17,14 +17,14 @@ func ConvertVideoInfoToVideo(videoInfo *common.Videoinfo, video *common.Video, u
 	video.Author.FollowCount = videoInfo.AuthorFollowCount
 	video.Author.FollowerCount = videoInfo.AuthorFollowerCount
 	video.Author.IsFollow = Mydatabase.IsFollow(video.Author.Id, userId)
-	
-	video.Author.Avator = videoInfo.AuthorAvator
+
+	video.Author.Avatar = videoInfo.AuthorAvator
 	video.Author.BackgroundImage = videoInfo.AuthorBackgroundImage
 	video.Author.Signature = videoInfo.AuthorSignature
 	video.Author.TotalFavorited = videoInfo.AuthorTotalFavorited
 	video.Author.WorkCount = videoInfo.AuthorWorkCount
 	video.Author.FavoriteCount = videoInfo.AuthorFavoriteCount
-	
+
 	video.PlayUrl = videoInfo.VideoPlayUrl
 	video.CoverUrl = videoInfo.VideoCoverUrl
 	video.FavoriteCount = videoInfo.VideoFavoriteCount
@@ -42,7 +42,7 @@ func ConvertVideoToVideoInfo(video *common.Video, videoInfo *common.Videoinfo) {
 	videoInfo.AuthorName = video.Author.Name
 	videoInfo.AuthorFollowCount = video.Author.FollowCount
 	videoInfo.AuthorFollowerCount = video.Author.FollowerCount
-	videoInfo.AuthorAvator = video.Author.Avator
+	videoInfo.AuthorAvator = video.Author.Avatar
 	videoInfo.AuthorBackgroundImage = video.Author.BackgroundImage
 	videoInfo.AuthorSignature = video.Author.Signature
 	videoInfo.AuthorTotalFavorited = video.Author.TotalFavorited
@@ -63,7 +63,7 @@ func ConvertUserInfoToUser(userInfo *common.Userinfo, user *common.User, userId 
 	user.FollowCount = userInfo.FollowCount
 	user.FollowerCount = userInfo.FollowerCount
 	user.IsFollow = Mydatabase.IsFollow(user.Id, userId)
-	user.Avator = userInfo.Avator
+	user.Avatar = userInfo.Avator
 	user.BackgroundImage = userInfo.BackgroundImage
 	user.Signature = userInfo.Signature
 	user.TotalFavorited = userInfo.TotalFavorited
@@ -79,7 +79,7 @@ func ConvertUserToUserIfo(user *common.User, userInfo *common.Userinfo) {
 	userInfo.Name = user.Name
 	userInfo.FollowCount = user.FollowCount
 	userInfo.FollowerCount = user.FollowerCount
-	userInfo.Avator = user.Avator
+	userInfo.Avator = user.Avatar
 	userInfo.BackgroundImage = user.BackgroundImage
 	userInfo.Signature = user.Signature
 	userInfo.TotalFavorited = user.TotalFavorited

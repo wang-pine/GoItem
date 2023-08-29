@@ -70,9 +70,13 @@ func Register(c *gin.Context) {
 			fmt.Println("插入新用户密码错误", err)
 		}
 		token := service.CreateUserToken(userId, password)
+		//新建userInfo结构体
+		//用于插入到信息总库中
 		var userInfo common.Userinfo
 		userInfo.Id = userId
 		userInfo.Name = username
+		userInfo.Avator = service.GetRandAvatar()
+		userInfo.BackgroundImage = service.GetRandBGIMG()
 		//在总数据库中插入当前用户的信息
 		res := Mydatabase.InsertUser(&userInfo)
 		if !res {

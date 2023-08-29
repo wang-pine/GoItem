@@ -51,15 +51,6 @@ func dynamicConfig() {
 	})
 }
 
-// func GetLocalAddr() (res string) {
-// 	return ConfigInfo.GetString("local.addr")
-// }
-// func GetDatabaseAddr() (res string) {
-// 	return ConfigInfo.GetString("mysql.IP") + ":" + ConfigInfo.GetString("mysql.Port")
-// }
-
-// var LocalAddr = "localhost:8080"
-// var DatabaseAddr = "localhost:3306"
 
 func GetConfig() (config Config) {
 	fmt.Println("正在获取配置文件...")

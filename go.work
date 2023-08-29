@@ -12,6 +12,4 @@ use ./test
 
 use ./common
 
-use ./nouse
-
 use ./config

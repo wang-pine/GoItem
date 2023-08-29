@@ -56,7 +56,7 @@ func Publish(c *gin.Context) {
 	new_video.Id = last.VideoId + 1 //应当是最后一个+1
 	new_video.Author = user
 	new_video.CommentCount = 0
-	new_video.CoverUrl = ""
+	new_video.CoverUrl = GetRandCover()
 	new_video.FavoriteCount = userinfo.FavoriteCount
 	new_video.IsFavorite = false
 	new_video.PlayUrl = config.GetLocalAddr() + "/static/" + finalName
@@ -66,6 +66,7 @@ func Publish(c *gin.Context) {
 	videoInfo.VideoTitle = title
 	videoInfo.VideoTime = ""
 	//插入到视频总表的数据库
+	videoInfo.AuthorWorkCount++
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
 	//插入进用户分表
 	Mydatabase.InsertVideoIdToUserTable(videoInfo.VideoId, videoInfo.AuthorId)
@@ -107,19 +108,4 @@ func Publish(c *gin.Context) {
 		StatusCode: 0,
 		StatusMsg:  finalName + " uploaded successfully",
 	})
-}
-
-func PublishList(c *gin.Context) {
-	//controller.userVideoList,len:=Mydatabase.GetUserVideosList()
-	//var i int
-	//userVideoListTotal []Video
-	//for i=0;i<len;i++{
-	//	// userVideoListTotal=append(userVideoList,)
-	//}
-	//c.JSON(http.StatusOK, VideoListResponse{
-	//	Response: Response{
-	//		StatusCode: 0,
-	//	},
-	//	VideoList: DemoVideos,
-	//})
 }

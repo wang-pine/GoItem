@@ -7,15 +7,6 @@ type Response struct {
 	StatusMsg  string `json:"status_msg,omitempty"`
 }
 
-// type Video struct {
-// 	Id            int64  `json:"id,omitempty"`
-// 	Author        User   `json:"author"`
-// 	PlayUrl       string `json:"play_url,omitempty"`
-// 	CoverUrl      string `json:"cover_url,omitempty"`
-// 	FavoriteCount int64  `json:"favorite_count,omitempty"`
-// 	CommentCount  int64  `json:"comment_count,omitempty"`
-// 	IsFavorite    bool   `json:"is_favorite,omitempty"`
-// }
 type Video struct {
 	Id            int64  `json:"id,omitempty"`
 	Author        User   `json:"author"`
@@ -33,20 +24,13 @@ type Comment struct {
 	CreateDate string `json:"create_date,omitempty"`
 }
 
-// type User struct {
-// 	Id            int64  `json:"id,omitempty"`
-// 	Name          string `json:"name,omitempty"`
-// 	FollowCount   int64  `json:"follow_count,omitempty"`
-// 	FollowerCount int64  `json:"follower_count,omitempty"`
-// 	IsFollow      bool   `json:"is_follow,omitempty"`
-// }
 type User struct {
 	Id              int64  `json:"id,omitempty"`
 	Name            string `json:"name,omitempty"`
 	FollowCount     int64  `json:"follow_count,omitempty"`
 	FollowerCount   int64  `json:"follower_count,omitempty"`
 	IsFollow        bool   `json:"is_follow,omitempty"`
-	Avator          string `json:"avator,omitempty"`
+	Avatar          string `json:"avatar,omitempty"`
 	BackgroundImage string `json:"background_image,omitempty"`
 	Signature       string `json:"signature,omitempty"`
 	TotalFavorited  int64  `json:"total_favorited,omitempty"`
