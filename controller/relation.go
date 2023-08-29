@@ -26,12 +26,58 @@ func RelationAction(c *gin.Context) {
 		fmt.Println("Token not exist")
 	}
 	if actionType == "1" {
+		//1表示对目标用户进行关注
 		Mydatabase.InsertFollowIdToUserTable(toUserId, userId)
 		Mydatabase.InsertFollowerIdToUserTable(userId, toUserId)
+		//改库1.总库2.视频库中的用户信息
+		//1
+		userInfo1 := Mydatabase.QueryUserById(userId)
+		userInfo1.FollowCount++
+		userInfo2 := Mydatabase.QueryUserById(toUserId)
+		userInfo2.FollowerCount++
+		Mydatabase.UpdateUser(&userInfo1)
+		Mydatabase.UpdateUser(&userInfo2)
+		//2
+		videoList := Mydatabase.QueryVideoByAuthorId(userId)
+		var i int
+		for i = 0; i < len(videoList); i++ {
+			videoList[i].AuthorFollowCount++
+			Mydatabase.UpdateVideoInfo(&videoList[i])
+		}
+		videoList2 := Mydatabase.QueryVideoByAuthorId(toUserId)
+		var j int
+		for j = 0; j < len(videoList2); j++ {
+			videoList2[j].AuthorFollowerCount++
+			Mydatabase.UpdateVideoInfo(&videoList2[j])
+		}
+
 		c.JSON(http.StatusOK, common.Response{StatusCode: 0, StatusMsg: "关注成功"})
 	} else if actionType == "2" {
+		//2表示对目标用户进行取关
 		Mydatabase.DeleteFollow(toUserId, userId)
 		Mydatabase.DeleteFollower(userId, toUserId)
+		//改库1.总库2.视频库中的用户信息
+		//1
+		userInfo1 := Mydatabase.QueryUserById(userId)
+		userInfo1.FollowCount--
+		userInfo2 := Mydatabase.QueryUserById(toUserId)
+		userInfo2.FollowerCount--
+		Mydatabase.UpdateUser(&userInfo1)
+		Mydatabase.UpdateUser(&userInfo2)
+		//2
+		videoList := Mydatabase.QueryVideoByAuthorId(userId)
+		var i int
+		for i = 0; i < len(videoList); i++ {
+			videoList[i].AuthorFollowCount--
+			Mydatabase.UpdateVideoInfo(&videoList[i])
+		}
+		videoList2 := Mydatabase.QueryVideoByAuthorId(toUserId)
+		var j int
+		for j = 0; j < len(videoList2); j++ {
+			videoList2[j].AuthorFollowerCount--
+			Mydatabase.UpdateVideoInfo(&videoList2[j])
+		}
+
 		c.JSON(http.StatusOK, common.Response{StatusCode: 0, StatusMsg: "取消关注成功"})
 	} else {
 		c.JSON(http.StatusOK, common.Response{StatusCode: 1, StatusMsg: "关注失败"})

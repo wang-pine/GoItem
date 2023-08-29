@@ -1,6 +1,12 @@
 package Mydatabase
 
+/*
+********************
+存储用户订阅的人
+********************
+*/
 import (
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -13,7 +19,7 @@ var dbFollow *sql.DB
 // 维护用户关注的人
 func InitFollowDatabase() (err error) {
 	fmt.Printf("正在初始化用户视频列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_follow"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_follow"
 	dbFollow, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {
@@ -41,6 +47,7 @@ func MakeNewFollowTable(id int64) (err error) {
 		fmt.Printf("make table error:%v\n", err1)
 		return err1
 	}
+	dbFollow.Close()
 	return
 }
 
@@ -58,6 +65,7 @@ func InsertFollowIdToUserTable(followId int64, userId int64) {
 		fmt.Printf("get failed,err:%v\n", err)
 		return
 	}
+	dbFollow.Close()
 	fmt.Println("运行成功的id是", id)
 }
 
@@ -88,6 +96,7 @@ func GetUserFollowList(userId int64) (ret []int64, arrayLen int) {
 			UserFollowList = append(UserFollowList, follow_id)
 		}
 	}
+	dbFollow.Close()
 	return UserFollowList, len(UserFollowList)
 }
 
@@ -98,5 +107,7 @@ func DeleteFollow(deleteFollowId int64, userId int64) {
 	_, err := dbFollow.Exec(sqlStr)
 	if err != nil {
 		fmt.Println("error", err)
+		return
 	}
+	dbFollow.Close()
 }

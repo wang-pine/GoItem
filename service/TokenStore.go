@@ -1,6 +1,7 @@
 package service
 
 import (
+	"Mydatabase/util"
 	"crypto/md5"
 	"encoding/hex"
 	"strconv"
@@ -16,28 +17,46 @@ var idStore = make(map[int64]string)
 // userId:"token"
 // 维护两个哈希表实现键值对的快速查询
 func PushToken(token string, userId int64) bool {
-	if tokenStore[token] == 0 {
-		tokenStore[token] = userId
-		idStore[userId] = token
+	userIdstr := strconv.FormatInt(userId, 10)
+	// if tokenStore[token] == 0 {
+	// 	tokenStore[token] = userId
+	// 	idStore[userId] = token
+	// } else {
+	// 	return false
+	// }
+	// return true
+	tag, _ := util.Get("token")
+	if tag == false {
+		util.Set(token, userIdstr)
+		util.Set(userIdstr, token)
 	} else {
 		return false
 	}
 	return true
+
 }
 
 func SearchToken(token string) (ok bool, userId int64) {
-	if tokenStore[token] == 0 {
+	tag, res := util.Get(token)
+	nt64, err := strconv.ParseInt(res, 10, 64)
+	if tag == false || err != nil {
 		return false, 0
 	} else {
-		return true, tokenStore[token]
+		return true, nt64
 	}
 }
 func SearchTokenById(Id int64) (ok bool, token string) {
-	if idStore[Id] == "" {
+	tag, res := util.Get(strconv.FormatInt(Id, 10))
+	if tag == false {
 		return false, ""
 	} else {
-		return true, idStore[Id]
+		return true, res
 	}
+	//if idStore[Id] == "" {
+	//	return false, ""
+	//} else {
+	//	return true, idStore[Id]
+	//}
 }
 
 // MD5加密

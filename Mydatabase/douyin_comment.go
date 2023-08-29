@@ -1,7 +1,13 @@
 package Mydatabase
 
+/*
+********************
+存储视频下用户的评论
+********************
+*/
 import (
 	"common"
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -13,7 +19,7 @@ var dbComment *sql.DB
 // 初始化每个视频的评论数据库
 func InitCommentDatabase() (err error) {
 	fmt.Printf("正在初始化视频评论列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_comment"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_comment"
 	dbComment, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {
@@ -44,6 +50,7 @@ func MakeCommentTable(videoId int64) (err error) {
 		fmt.Printf("make table error:%v\n", err)
 		return err1
 	}
+	dbComment.Close()
 	return
 }
 
@@ -69,6 +76,7 @@ func InsertComment(videoId int64, userId int64, comment string) (id int64, date 
 		return
 	}
 	fmt.Println("运行成功的id是", id)
+	dbComment.Close()
 	return int64(id), currentDate
 }
 
@@ -87,6 +95,7 @@ func DeleteComment(videoId int64, commentId int64) (err error) {
 		return
 	}
 	fmt.Println("运行成功的id是", id)
+	dbComment.Close()
 	return
 }
 
@@ -127,5 +136,6 @@ func GetCommentList(videoId int64) (commentList []common.Comment) {
 	// for i = 0; i < len(commentList); i++ {
 	// 	fmt.Println(commentList[i])
 	// }
+	dbComment.Close()
 	return commentList
 }

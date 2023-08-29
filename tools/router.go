@@ -1,7 +1,9 @@
 package tools
 
 import (
+	"config"
 	"controller"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -42,4 +44,15 @@ func InitRouter(r *gin.Engine) {
 	apiRouter.GET("/relation/friend/list/", controller.FriendList)
 	apiRouter.GET("/message/chat/", controller.MessageChat)
 	apiRouter.POST("/message/action/", controller.MessageAction)
+
+	//获取配置清单
+	apiRouter.GET("/config", func(context *gin.Context) {
+		fmt.Println("当前")
+		context.JSON(
+			200, gin.H{
+				"local_addr": config.ConfigInfo.GetString("local.addr"),
+				"mysql_ip":   config.ConfigInfo.GetString("mysql.IP"),
+				"mysql_port": config.ConfigInfo.GetString("mysql.Port"),
+			})
+	})
 }

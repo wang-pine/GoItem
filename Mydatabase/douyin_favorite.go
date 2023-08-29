@@ -1,6 +1,12 @@
 package Mydatabase
 
+/*
+********************
+存储用户点赞的视频
+********************
+*/
 import (
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -11,7 +17,7 @@ var dbFavorite *sql.DB
 // 初始化视频点赞表
 func InitFavoriteDatabase() (err error) {
 	fmt.Printf("正在初始化视频用户点赞列表数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_favorite"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_favorite"
 	dbFavorite, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {
@@ -26,8 +32,8 @@ func InitFavoriteDatabase() (err error) {
 	return
 }
 
-// 根据视频的id创建每个视频的用户点赞的分表
-// 这里需要传入视频的id
+// 根据用户id创建用户的点赞分表
+// 这里需要传入用户的id
 func MakeNewFavoriteTable(userId int64) (err error) {
 	err = InitFavoriteDatabase()
 	if err != nil {
@@ -43,6 +49,7 @@ func MakeNewFavoriteTable(userId int64) (err error) {
 		fmt.Printf("make table error:%v\n", err)
 		return err
 	}
+	dbFavorite.Close()
 	return
 }
 
@@ -82,6 +89,7 @@ func InsertUserIdToFavoriteTable(videoId int64, userId int64) bool {
 			return false
 		}
 	}
+	dbFavorite.Close()
 	return true
 }
 
@@ -102,6 +110,7 @@ func DeleteUserIdToFavoriteTable(videoId int64, userId int64) bool {
 			return false
 		}
 	}
+	dbFavorite.Close()
 	return true
 }
 
@@ -138,6 +147,7 @@ func GetFavoriteVideoList(userId int64, videoId int64) (ret []int64, arrayLen in
 		VideoFavorUsersList = append(VideoFavorUsersList, video_id)
 
 	}
+	dbFavorite.Close()
 	return VideoFavorUsersList, len(VideoFavorUsersList)
 }
 
@@ -176,5 +186,6 @@ func GetUserFavoriteVideoList(userId int64) (ret []int64, arrayLen int) {
 		}
 
 	}
+	dbFavorite.Close()
 	return VideoFavorUsersList, len(VideoFavorUsersList)
 }

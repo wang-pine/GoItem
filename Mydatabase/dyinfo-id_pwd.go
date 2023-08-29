@@ -1,6 +1,13 @@
 package Mydatabase
 
+/*
+********************
+存储用户账号密码
+********************
+*/
+
 import (
+	"config"
 	"crypto/md5"
 	"database/sql"
 	"encoding/hex"
@@ -14,7 +21,7 @@ var dbPWD *sql.DB
 // 链接账号密码数据表
 func InitPWDDatabase() (err error) {
 	fmt.Printf("正在初始化用户账号密码数据库...\n")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_info"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_info"
 	dbPWD, err = sql.Open("mysql", dsn)
 	//注意这里是=，因为go会自动检查局部变量覆盖全局变量，切记
 	//open函数是不会检查用户名和密码的
@@ -36,7 +43,7 @@ func InsertNewUser(PWD string) (error, int64) {
 	InitPWDDatabase()
 	md5Str := StringToMD5(PWD)
 	//fmt.Println(md5Str)
-	sqlStr := "INSERT INTO id_pwd(PWD) VALUES('" + md5Str + "')"
+	sqlStr := "INSERT INTO ID_PWD(PWD) VALUES('" + md5Str + "')"
 	ret, err := dbPWD.Exec(sqlStr)
 	if err != nil {
 		fmt.Printf("insert failed,err%v\n", err)
@@ -49,6 +56,7 @@ func InsertNewUser(PWD string) (error, int64) {
 		return err, 0
 	}
 	fmt.Println("插入成功id=", id)
+	dbPWD.Close()
 	return err, int64(id)
 }
 
@@ -63,8 +71,9 @@ func StringToMD5(PWD string) string {
 // 数据库中查询用户的密码
 func QueryUserPWD(id int64) (PWD string) {
 	InitPWDDatabase()
-	sqlStr := "select PWD FROM id_pwd WHERE id = ?"
+	sqlStr := "select PWD FROM ID_PWD WHERE id = ?"
 	dbPWD.QueryRow(sqlStr, id).Scan(&PWD)
+	dbPWD.Close()
 	return PWD
 }
 

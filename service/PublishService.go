@@ -3,6 +3,7 @@ package service
 import (
 	"Mydatabase"
 	"common"
+	"config"
 	"fmt"
 	"net/http"
 	"path/filepath"
@@ -55,16 +56,17 @@ func Publish(c *gin.Context) {
 	new_video.Id = last.VideoId + 1 //应当是最后一个+1
 	new_video.Author = user
 	new_video.CommentCount = 0
-	new_video.CoverUrl = ""
+	new_video.CoverUrl = GetRandCover()
 	new_video.FavoriteCount = userinfo.FavoriteCount
 	new_video.IsFavorite = false
-	new_video.PlayUrl = "http://localhost:8888/static/" + finalName
+	new_video.PlayUrl = config.GetLocalAddr() + "/static/" + finalName
 	//new_video.PlayUrl = "http://192.168.3.10:8888/static/" + finalName
 	var videoInfo common.Videoinfo
 	ConvertUserVideoToVideoIfo(&userinfo, &new_video, &videoInfo)
 	videoInfo.VideoTitle = title
 	videoInfo.VideoTime = ""
 	//插入到视频总表的数据库
+	videoInfo.AuthorWorkCount++
 	res := Mydatabase.InsertVideoInfo(&videoInfo)
 	//插入进用户分表
 	Mydatabase.InsertVideoIdToUserTable(videoInfo.VideoId, videoInfo.AuthorId)
@@ -77,7 +79,15 @@ func Publish(c *gin.Context) {
 		})
 		return
 	}
-
+	//创建视频评论表
+	err = Mydatabase.MakeCommentTable(videoInfo.VideoId)
+	if err != nil {
+		c.JSON(http.StatusOK, common.Response{
+			StatusCode: 1,
+			StatusMsg:  "创建视频评论表失败！",
+		})
+		return
+	}
 	if res == false {
 		c.JSON(http.StatusOK, common.Response{
 			StatusCode: 1,
@@ -98,19 +108,4 @@ func Publish(c *gin.Context) {
 		StatusCode: 0,
 		StatusMsg:  finalName + " uploaded successfully",
 	})
-}
-
-func PublishList(c *gin.Context) {
-	//controller.userVideoList,len:=Mydatabase.GetUserVideosList()
-	//var i int
-	//userVideoListTotal []Video
-	//for i=0;i<len;i++{
-	//	// userVideoListTotal=append(userVideoList,)
-	//}
-	//c.JSON(http.StatusOK, VideoListResponse{
-	//	Response: Response{
-	//		StatusCode: 0,
-	//	},
-	//	VideoList: DemoVideos,
-	//})
 }

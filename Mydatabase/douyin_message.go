@@ -1,7 +1,13 @@
 package Mydatabase
 
+/*
+********************
+存储用户的聊天记录
+********************
+*/
 import (
 	"common"
+	"config"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -15,7 +21,7 @@ var dbMessage *sql.DB
 // 本文件用于维护message数据库
 func InitMessageDatabase() (err error) {
 	fmt.Println("正在初始化信息数据库...")
-	dsn := "douyin:123456@tcp(127.0.0.1:3306)/douyin_message"
+	dsn := "douyin:123456@tcp(" + config.GetDBAddr() + ")/douyin_message"
 	dbMessage, err = sql.Open("mysql", dsn)
 	//open函数是不会检查用户名和密码的
 	if err != nil {
@@ -45,6 +51,7 @@ func MakeNewMessageTable(id int64) (err error) {
 	if err != nil {
 		return err
 	}
+	dbMessage.Close()
 	return
 }
 func InsertMessage(fromUserId int64, toUserId int64, content string) (date string, err error) {
@@ -72,13 +79,14 @@ func InsertMessage(fromUserId int64, toUserId int64, content string) (date strin
 	if err != nil {
 		return currentTime, err
 	}
+	dbMessage.Close()
 	return
 }
 
 // 发送某个用户的全部消息列表
-func GetMessageList(userId int64) (messageList []common.Message) {
+func GetMessageList(userId int64, msg_time int64) (messageList []common.Message) {
 	InitMessageDatabase()
-	sqlStr := "SELECT message_id,to_user_id,from_user_id,content,create_time FROM`" + strconv.FormatInt(userId, 10) + "`WHERE message_id >0"
+	sqlStr := "SELECT message_id,to_user_id,from_user_id,content,create_time FROM`" + strconv.FormatInt(userId, 10) + "`WHERE message_id >0 and create_time >" + strconv.FormatInt(msg_time, 10)
 	rows, err := dbMessage.Query(sqlStr)
 	if err != nil {
 		fmt.Printf("query failed, err:%v\n", err)
@@ -91,7 +99,7 @@ func GetMessageList(userId int64) (messageList []common.Message) {
 	var toUserId int64
 	var fromUserId int64
 	var content string
-	var createTime string
+	var createTime int64
 	var message common.Message
 	for rows.Next() {
 		err := rows.Scan(&messageId, &toUserId, &fromUserId, &content, &createTime)
@@ -106,5 +114,6 @@ func GetMessageList(userId int64) (messageList []common.Message) {
 		message.CreateTime = createTime
 		messageList = append(messageList, message)
 	}
+	dbMessage.Close()
 	return messageList
 }

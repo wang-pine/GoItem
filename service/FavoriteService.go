@@ -4,9 +4,10 @@ import (
 	"Mydatabase"
 	"common"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 // FavoriteAction no practical effect, just check if token is valid
@@ -41,6 +42,11 @@ func FavoriteAction(c *gin.Context) {
 		//维护两个表
 		Mydatabase.InsertUserIdToFavoriteTable(videoID, userId)
 		Mydatabase.InsertUserIdToVideoTable(videoID, userId)
+		//修改总表
+		videoInfo := Mydatabase.QueryVideoById(videoID)
+		videoInfo.VideoFavoriteCount++
+		Mydatabase.UpdateVideoInfo(&videoInfo)
+
 		if res == false {
 			c.JSON(http.StatusOK, common.Response{
 				StatusCode: 1,
@@ -60,6 +66,11 @@ func FavoriteAction(c *gin.Context) {
 	if actionType == "2" {
 		res := Mydatabase.DeleteUserIdToFavoriteTable(videoID, userId)
 		Mydatabase.DeleteUserIdToVideoTable(videoID, userId)
+
+		//修改总表
+		videoInfo := Mydatabase.QueryVideoById(videoID)
+		videoInfo.VideoFavoriteCount--
+		Mydatabase.UpdateVideoInfo(&videoInfo)
 		if res == false {
 			c.JSON(http.StatusOK, common.Response{
 				StatusCode: 1,

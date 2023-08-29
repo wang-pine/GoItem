@@ -1,0 +1,7 @@
+Version: "2.1"
+Debug: "false"
+local:
+  addr: http://192.168.3.10:8080
+mysql:
+  IP: 127.0.0.1
+  Port: 3306
