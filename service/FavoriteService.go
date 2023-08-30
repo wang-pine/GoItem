@@ -45,8 +45,11 @@ func FavoriteAction(c *gin.Context) {
 		//修改总表
 		videoInfo := Mydatabase.QueryVideoById(videoID)
 		videoInfo.VideoFavoriteCount++
+		videoInfo.AuthorTotalFavorited++
 		Mydatabase.UpdateVideoInfo(&videoInfo)
-
+		userInfo := Mydatabase.QueryUserById(videoInfo.AuthorId)
+		userInfo.TotalFavorited++
+		Mydatabase.UpdateUser(&userInfo)
 		if res == false {
 			c.JSON(http.StatusOK, common.Response{
 				StatusCode: 1,
@@ -70,7 +73,11 @@ func FavoriteAction(c *gin.Context) {
 		//修改总表
 		videoInfo := Mydatabase.QueryVideoById(videoID)
 		videoInfo.VideoFavoriteCount--
+		videoInfo.AuthorTotalFavorited--
 		Mydatabase.UpdateVideoInfo(&videoInfo)
+		userInfo := Mydatabase.QueryUserById(videoInfo.AuthorId)
+		userInfo.TotalFavorited--
+		Mydatabase.UpdateUser(&userInfo)
 		if res == false {
 			c.JSON(http.StatusOK, common.Response{
 				StatusCode: 1,

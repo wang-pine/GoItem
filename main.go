@@ -12,6 +12,7 @@ func main() {
 	config.InitConfig()
 	r := gin.Default()
 	tools.InitRouter(r)
+
 	err := r.Run(":8080")
 	if err != nil {
 		return

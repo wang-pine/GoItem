@@ -38,6 +38,6 @@ func TestFavoriteQuery(t *testing.T) {
 }
 func TestDelete(t *testing.T) {
 	//Mydatabase.DeleteUserIdToVideoTable(10, 1)
-	Mydatabase.InsertUserIdToVideoTable(10, 1)
+	Mydatabase.InsertUserIdToVideoTable(5, 2)
 
 }

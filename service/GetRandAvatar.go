@@ -22,11 +22,11 @@ func GetRandAvatar() (avatar string) {
 		break
 	case 3:
 		fmt.Println("3")
-		avatar = config.GetLocalAddr() + "/static/A_3.jpg"
+		avatar = config.GetLocalAddr() + "/static/A_3.png"
 		break
 	default:
 		fmt.Println("0")
-		avatar = config.GetLocalAddr() + "/static/A_3.jpg"
+		avatar = config.GetLocalAddr() + "/static/A_3.png"
 		break
 	}
 	return avatar
