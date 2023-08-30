@@ -18,9 +18,9 @@ create database douyin_comment;
 #创建douyin_message数据库
 create database douyin_message;
 #创建douyin_folllow数据库
+create database douyin_follow;
 
 #创建用户数据库并授权
-create database douyin_follow;
 GRANT CREATE,ALTER,INSERT,SELECT,UPDATE ON douyin_info.* TO douyin;
 GRANT CREATE,ALTER,INSERT,SELECT,UPDATE ON douyin_users.* to douyin;
 GRANT CREATE,ALTER,INSERT,SELECT,UPDATE ON douyin_videos.* to douyin;
@@ -41,8 +41,8 @@ CREATE TABLE ID_PWD(
 
 #创建用户信息数据库
 USE douyin_info;
-DROP TABLE IF EXISTS userInfo;
-CREATE TABLE userInfo(
+DROP TABLE IF EXISTS userinfo;
+CREATE TABLE userinfo(
     id BIGINT(20) NOT NULL AUTO_INCREMENT,
     name VARCHAR(20) DEFAULT '',
     follow_count BIGINT DEFAULT '0',
@@ -58,8 +58,8 @@ CREATE TABLE userInfo(
 
 #存储视频的所有信息
 USE douyin_info;
-DROP TABLE IF EXISTS videoInfo;
-CREATE TABLE videoInfo(
+DROP TABLE IF EXISTS videoinfo;
+CREATE TABLE videoinfo(
     video_id BIGINT(20) NOT NULL AUTO_INCREMENT,
     author_id BIGINT(20) NOT NULL,
     author_name VARCHAR(20) DEFAULT '',
