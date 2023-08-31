@@ -39,6 +39,15 @@ func CommentAction(c *gin.Context) {
 		commentText := c.Query("comment_text")
 		commentId, currentDate := Mydatabase.InsertComment(videoId, userId, commentText)
 		userInfo := Mydatabase.QueryUserById(userId)
+		//视频总库信息修改
+		videoInfo := Mydatabase.QueryVideoById(videoId)
+		videoInfo.VideoCommentCount++
+		ok := Mydatabase.UpdateVideoInfo(&videoInfo)
+		if !ok {
+			fmt.Println("数据库修改失败")
+			c.JSON(http.StatusOK, common.Response{StatusCode: 1, StatusMsg: "数据库修改失败"})
+			return
+		}
 		var user common.User
 		service.ConvertUserInfoToUser(&userInfo, &user, userId)
 		c.JSON(http.StatusOK, CommentActionResponse{
@@ -55,6 +64,15 @@ func CommentAction(c *gin.Context) {
 		err := Mydatabase.DeleteComment(videoId, commentId)
 		if err != nil {
 			fmt.Println("delete error")
+		}
+		//视频总库信息修改
+		videoInfo := Mydatabase.QueryVideoById(videoId)
+		videoInfo.VideoCommentCount--
+		ok := Mydatabase.UpdateVideoInfo(&videoInfo)
+		if !ok {
+			fmt.Println("数据库修改失败")
+			c.JSON(http.StatusOK, common.Response{StatusCode: 1, StatusMsg: "数据库修改失败"})
+			return
 		}
 		c.JSON(http.StatusOK, common.Response{StatusCode: 0, StatusMsg: "删除成功"})
 	} else {

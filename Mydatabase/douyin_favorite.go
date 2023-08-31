@@ -67,6 +67,7 @@ func execFavoriteDatabase(sqlStr string) bool {
 		return false
 	}
 	fmt.Println("运行成功的id是", id)
+	dbFavorite.Close()
 	return true
 }
 
@@ -77,20 +78,8 @@ func InsertUserIdToFavoriteTable(videoId int64, userId int64) bool {
 	if err != nil {
 		return false
 	}
-	videos, size := GetFavoriteVideoList(userId, videoId)
-	if size == 0 {
-		sqlStr := "INSERT INTO `" + strconv.FormatInt(userId, 10) + "`(favorite_video_id,user_id)VALUES(" + strconv.FormatInt(videoId, 10) + "," + strconv.FormatInt(userId, 10) + ");"
-		return execFavoriteDatabase(sqlStr)
-	}
-	for i := 0; i < size; i++ {
-		sqlStr := "UPDATE `" + strconv.FormatInt(userId, 10) + "` SET is_delete = 0" + " WHERE favorite_video_id = " + strconv.FormatInt(videos[i], 10)
-		res := execFavoriteDatabase(sqlStr)
-		if res == false {
-			return false
-		}
-	}
-	dbFavorite.Close()
-	return true
+	sqlStr := "INSERT INTO `" + strconv.FormatInt(userId, 10) + "`(favorite_video_id,user_id)VALUES(" + strconv.FormatInt(videoId, 10) + "," + strconv.FormatInt(userId, 10) + ");"
+	return execFavoriteDatabase(sqlStr)
 }
 
 // 逻辑删除，当delete表示1的时候表示删除
@@ -110,7 +99,6 @@ func DeleteUserIdToFavoriteTable(videoId int64, userId int64) bool {
 			return false
 		}
 	}
-	dbFavorite.Close()
 	return true
 }
 
@@ -147,7 +135,7 @@ func GetFavoriteVideoList(userId int64, videoId int64) (ret []int64, arrayLen in
 		VideoFavorUsersList = append(VideoFavorUsersList, video_id)
 
 	}
-	dbFavorite.Close()
+	//dbFavorite.Close()
 	return VideoFavorUsersList, len(VideoFavorUsersList)
 }
 
